@@ -1,0 +1,130 @@
+.nprogress-busy {
+  cursor: wait;
+}
+
+.form-control {
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: rgba(102, 175, 233, .8);
+  box-shadow: 0 0 0 2px rgba(102, 175, 233, .4);
+}
+
+body {
+  background-color: #f8f9fb;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main .container-fluid form h2 {
+  margin-top: 5px;
+  margin-bottom: 15px;
+
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.main .container-fluid table {
+  background-color: #fff;
+}
+
+.main .container-fluid th {
+  border-bottom: 1px;
+
+  font-weight: 400;
+}
+
+.main .container-fluid td {
+  vertical-align: middle;
+}
+
+.main .container-fluid td .avatar {
+  width: 40px;
+
+  border-radius: 50%;
+}
+
+.main .container-fluid td .slide {
+  width: auto;
+  max-height: 80px;
+}
+
+.main .container-fluid td i {
+  margin-right: 5px;
+}
+
+.main .container-fluid label {
+  color: #555;
+
+  font-weight: normal;
+}
+
+.main .container-fluid textarea {
+  resize: vertical;
+}
+
+.main .container-fluid .editor-toolbar:before {
+  margin-bottom: 5px;
+}
+
+.main .container-fluid .editor-toolbar:after {
+  margin-top: 5px;
+}
+
+.main .container-fluid .form-horizontal {
+  margin-top: 50px;
+}
+
+.main .container-fluid .form-image {
+  position: relative;
+
+  background-color: #fff;
+}
+
+.main .container-fluid .form-image input {
+  display: none;
+}
+
+.main .container-fluid .form-image img {
+  max-width: 150px;
+}
+
+.main .container-fluid .form-image i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  transition: opacity .3s;
+  text-align: center;
+
+  opacity: 0;
+  background: #c0c0c0;
+
+  font-size: 2em;
+}
+
+.main .container-fluid .form-image i::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  margin-top: -14px;
+  margin-left: -14px;
+}
+
+.main .container-fluid .form-image:hover i {
+  opacity: .6;
+}
+
+.main .container-fluid .thumbnail {
+  width: 100%;
+}
+.myh4{
+  border-top: 1px solid #ccc;
+  margin: 20px 0 0 0;
+  padding: 15px 0 5px 0
+}
