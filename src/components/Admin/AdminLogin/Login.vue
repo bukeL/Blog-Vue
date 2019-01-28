@@ -5,7 +5,7 @@
       <img  :src="img" :class="isFadeIn?'fadeIn animated avatar':'avatar'">
       <!-- 有错误信息时展示 -->
       <div class="alert alert-danger" v-if = "isExist">
-        <strong>错误！</strong> 用户名或密码错误！
+        <strong>错误！</strong> 用户名或者密码错误！
       </div>
       <div class="form-group">
         <label for="email" class="sr-only">邮箱</label>
