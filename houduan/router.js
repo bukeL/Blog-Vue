@@ -219,12 +219,7 @@ router.post('/api/adminLogin', function(req, res) {
 			console.log(error)
 			return
 		}
-		console.log(results.length)
-		if(results.length > 0){
-			res.json({isOk:true})
-		} else {
-			res.json({isOk:false})
-		}
+		res.json(results)
 	})
 	} else{
 		// console.log(4)

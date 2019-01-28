@@ -1,24 +1,24 @@
 <template>
   <div class="aside">
     <div class="profile">
-      <img class="avatar" src="../../../uploads/avatar.jpg">
-      <h3 class="name">布头儿</h3>
+      <img class="avatar" :src="myImg">
+      <h3 class="name">{{adminName}}</h3>
     </div>
     <ul class="nav">
-      <li :class="show==1?active:kong"  @click ="ybShow">
+      <li :class="show==1?active:''"  @click ="ybShow">
         <router-link :to = "{name:'AdminHome'}"><i class="fa fa-dashboard"></i>仪表盘</router-link>
       </li>
-      <li :class="(show==2||show==3||show==4)?active:kong">
+      <li :class="(show==2||show==3||show==4)?active:''">
         <a @click="changeIsShow"  data-toggle="collapse" >
           <i class="fa fa-thumb-tack"></i>文章<i class="fa fa-angle-right"></i>
         </a>
         <ul  v-show ="isShow">
-          <li @click ="allpShow" :class="show==2?active:kong"><router-link :to = "{name:'AllPosts'}">所有文章</router-link></li>
-          <li @click ="writeShow" :class="show==3?active:kong"><router-link :to = "{name:'AddPosts'}">写文章</router-link></li>
-          <li @click ="cateShow" :class="show==4?active:kong"><router-link :to = "{name:'Category'}">分类目录</router-link></li>
+          <li @click ="allpShow" :class="show==2?active:''"><router-link :to = "{name:'AllPosts'}">所有文章</router-link></li>
+          <li @click ="writeShow" :class="show==3?active:''"><router-link :to = "{name:'AddPosts'}">写文章</router-link></li>
+          <li @click ="cateShow" :class="show==4?active:''"><router-link :to = "{name:'Category'}">分类目录</router-link></li>
         </ul>
       </li>
-      <li @click ="userShow" :class="show==5?active:kong">
+      <li @click ="userShow" :class="show==5?active:''">
         <router-link :to = "{name:'AdminUser'}" ><i class="fa fa-users"></i>用户</router-link>
       </li>
     </ul>
@@ -26,16 +26,10 @@
 </template>
 
 <script>
+  // import myImg from '@/assets/img/default.png'
+  // import EventBus from '@/EventBus.js'
   export default {
   name: 'my-aside',
-  data () {
-    return {
-      isShow:false,
-      show:0,
-      active:'active',
-      kong:''
-    }
-  },
   methods:{
     ybShow(){
       
@@ -58,11 +52,36 @@
     this.isShow = !this.isShow
     // alert(this.isShow)
      // console.log(e.target)
+  }
   },
-
+  // created(){ 
+  //   EventBus.$on('sendAvatar',function(data) { //this指向有问题,选用箭头函数
+  //     console.log(data)
+  //     console.log(this) //指向eventbus
+  //     this.img = data
+  //   })
+  // },
+   data () {
+    return {
+      isShow:false,
+      show:0,
+      active:'active',
+      myImg:'url',
+      adminName:''
+    }
   },
   created(){
-  
+    // this.$nextTick(function(){
+    //    EventBus.$on('sendAvatar',data => {
+    //   console.log(data)
+    //   this.img = data.avatar
+    // })
+    // })
+    this.myImg = this.$route.params.avatar
+    this.adminName = this.$route.params.nickname
+     // console.log(this.$route)
+    // console.log(this.myImg)
+      
   },
   watch:{
     $route(to,from,next){

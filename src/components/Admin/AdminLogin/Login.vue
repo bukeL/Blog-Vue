@@ -23,6 +23,7 @@
 
 <script>
   import myImg from '@/assets/img/default.png'
+  // import EventBus from '@/EventBus.js'
   export default {
   name: 'Detail',
   data () {
@@ -39,12 +40,16 @@
       this.isExist = false
       this.$axios.post('adminLogin',{param:{'myEmail':this.myEmail,'myPassword':this.myPassword}})
       .then(res => {
-        console.log(res)
-        if(res.data.isOk == true) {
-          this.$router.push({name:'AdminHome'})
+        // console.log(res)
+        if(res.data.length > 0) {
+          // console.log(res.data[0])
+          var params = JSON.stringify(res.data[0])
+          this.$router.push({name:'AdminHome',params:{avatar:this.img,nickname:res.data[0].nickname}}) //输入正确的用户名密码,跳到主页去
+          // EventBus.$emit('sendAvatar',this.img)
+          // alert('123')
         } else {
           // alert ('用户名或密码错误')
-          this.isExist = true
+          this.isExist = true 
         }
       })
       .catch(err => console.log(err))
@@ -56,7 +61,7 @@
       if (!emailFormat.test(this.myEmail)) return
       this.$axios.post('getAvatar',{param:{'myEmail':this.myEmail}})
     .then(res => {
-      console.log(res)
+      // console.log(res)
       if(res.data.length > 0) {
         this.img = res.data[0].avatar
         this.isFadeIn = true
