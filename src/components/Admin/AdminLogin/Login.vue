@@ -2,7 +2,7 @@
   <div  >
     <div class="login">
     <form :class="isExist?'shake animated login-wrap':'login-wrap'">
-      <img class="avatar " :src="img">
+      <img  :src="img" :class="isFadeIn?'fadeIn animated avatar':'avatar'">
       <!-- 有错误信息时展示 -->
       <div class="alert alert-danger" v-if = "isExist">
         <strong>错误！</strong> 用户名或密码错误！
@@ -30,7 +30,8 @@
       myEmail:'',
       myPassword:'',
       img:myImg,
-      isExist:false
+      isExist:false,
+      isFadeIn:false
     }
   },
   methods:{
@@ -50,6 +51,7 @@
     },
     getAvatar(){
       // console.log('出发了')
+      this.isFadeIn = false
       var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
       if (!emailFormat.test(this.myEmail)) return
       this.$axios.post('getAvatar',{param:{'myEmail':this.myEmail}})
@@ -57,6 +59,7 @@
       console.log(res)
       if(res.data.length > 0) {
         this.img = res.data[0].avatar
+        this.isFadeIn = true
       } else {
         this.img =myImg
       }
