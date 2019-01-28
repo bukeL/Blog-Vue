@@ -36,10 +36,9 @@ export default {
   methods:{
     searchByKey:function () {
       this.$router.push({name:'Detail',query:{value:this.myValue}})
-    }
-  },
-  created () {
-    this.$axios.get('allCategories')
+    },
+    serachAllCategories(){
+      this.$axios.get('allCategories')
     .then(res => {
       
       this.categories =res.data
@@ -48,6 +47,11 @@ export default {
     .catch(err => {
       console.log(err)
     })
+    }
+
+  },
+  created () {
+    this.serachAllCategories()
   }
 }
 </script>

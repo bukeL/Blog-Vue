@@ -7,7 +7,7 @@
             <router-link :to = "{name:'Detail',query:{id:post.posts_id}}">{{post.title}}</router-link>
           </div>
           <div class="main">
-            <p class="info">{{post.user_name}} 发表于 {{post.created}}</p>
+            <p class="info">{{post.user_name}} 发表于 {{post.created | convertTime('YYYY-MM-DD')}}</p>
             <p class="brief">{{post.content}}</p>
             <p class="extra">
               <span class="reading">阅读({{post.views}})</span>

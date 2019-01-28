@@ -52,11 +52,11 @@ router.get('/api/myRandom', function (req, res) {
 	})
 })
 
-//通过分类id和页码page 查询分类下的文章
+//通过分类id和页码page 查询分类下的文章,只查询已经批准的
 router.get('/api/myCategoriyPost', function (req, res) {
-	var id = parseInt(req.query.id)
+	var id = parseInt(req.query.id) || 1
 	//每次查询4条
-	var size = 4
+	var size = parseInt(req.query.size) || 4
 	//当前页码
 	var nowPage = parseInt(req.query.page) || 1 
 	console.log(nowPage)
@@ -85,7 +85,7 @@ router.get('/api/myCategoriyPost', function (req, res) {
 			from posts
 			inner join categories on posts.category_id = categories.id
 			inner join users on posts.user_id = users.id
-			where category_id='${id}' and posts.status='published'
+			where category_id='${id}' and posts.status='已发布'
 			order by posts.created desc
 			limit ${offset}, ${size};`
 	} 
@@ -100,9 +100,9 @@ router.get('/api/myCategoriyPost', function (req, res) {
 		res.json(result)
 	})
 })
-//通过page查询所有的文章
+//通过page查询所有的文章,,,,只查询已经批准的
 router.get('/api/myPosts', function (req, res) {
-	var size = 4
+	var size = parseInt(req.query.size) || 4
 	//当前页码
 	var nowPage = parseInt(req.query.page) || 1 
 	// console.log(nowPage)
@@ -127,7 +127,7 @@ router.get('/api/myPosts', function (req, res) {
 		  from posts
 		  inner join categories on posts.category_id = categories.id
 		  inner join users on posts.user_id = users.id
-		  where posts.status='published'
+		  where posts.status='已发布'
 		  order by posts.created desc
 		  limit ${offset}, ${size};`
 	db.query(sql, function(error, results, fields){
@@ -245,5 +245,127 @@ router.post('/api/getAvatar', function(req, res) {
 		res.json(results)
 	})
 	}
+})
+//获取所有文章数量以及未批准的数量
+router.get('/api/getAllPosts', function(req, res) {
+ var sql = 'select count(1) as num from posts'
+ db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		// console.log(1）
+		console.log(results)
+		res.json(results)
+	})
+})
+//获取未批准文章的数量
+router.get('/api/getDraftedNum', function(req, res) {
+ var sql = 'select count(1) as num from posts where status="未批准"'
+ db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		// console.log(1）
+		console.log(results)
+		res.json(results)
+	})
+})
+
+//查询所有文章,
+router.get('/api/myAllPosts', function (req, res) {
+	var size = parseInt(req.query.size) || 4
+	//当前页码
+	var nowPage = parseInt(req.query.page) || 1 
+	// console.log(nowPage)
+	if(nowPage < 1){
+		nowPage = 1
+	}
+	var offset = (nowPage - 1)* size
+	var sql = `select
+		  posts.id as posts_id,
+		  categories.id as categories_id,
+		  posts.title,
+		  users.nickname as user_name,
+		  categories.name as category_name,
+		  users.slug as users_slug,
+		  posts.created,
+		  posts.status,
+		  posts.slug,
+		  posts.content,
+		  posts.views,
+		  posts.likes,
+		  posts.feature
+		  from posts
+		  inner join categories on posts.category_id = categories.id
+		  inner join users on posts.user_id = users.id
+		  order by posts.created desc
+		  limit ${offset}, ${size};`
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		//切割数组
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
+})
+router.get('/api/specialpost',function(req, res) {
+	console.log(req.query)
+	var category = req.query.category || 0
+	var status = req.query.status || 0
+	var nowPage = req.query.page || 1
+	var size = req.query.size || 10
+		if(nowPage < 1){
+		nowPage = 1
+	}
+	console.log(category,status)
+	var offset = (nowPage - 1)* size
+	var sql = `select
+		  posts.id as posts_id,
+		  categories.id as categories_id,
+		  posts.title,
+		  users.nickname as user_name,
+		  categories.name as category_name,
+		  users.slug as users_slug,
+		  posts.created,
+		  posts.status,
+		  posts.slug,
+		  posts.content,
+		  posts.views,
+		  posts.likes,
+		  posts.feature
+		  from posts
+		  inner join categories on posts.category_id = categories.id
+		  inner join users on posts.user_id = users.id
+		  `
+		  if(category==0 && status==0){
+		  	sql += `order by posts.created desc limit ${offset}, ${size};`
+
+		  } else if (category==0 && status!=0) {
+		  	sql += `where posts.status ='${status}' 
+		  			order by posts.created desc 
+		  			limit ${offset}, ${size};`
+		  } else if (category!=0 && status==0) {
+		  	sql += `where posts.category_id = ${category}
+		  			order by posts.created desc 
+		 		 	limit ${offset}, ${size}`
+		  } else {
+		  	sql += `where posts.category_id = ${category} and posts.status ='${status}' 
+		 		 	order by posts.created desc 
+		 		 	limit ${offset}, ${size}`
+		  }
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
 })
 module.exports = router

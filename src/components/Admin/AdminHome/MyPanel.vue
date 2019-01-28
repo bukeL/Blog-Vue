@@ -2,8 +2,11 @@
   <div class="main">
     <div class="container-fluid">
       <div class="jumbotron text-center">
-        <h1>One Belt, One Road</h1>
-        <p>Thoughts, stories and ideas.</p>
+        <h2>今天就和昨天一样,想要明天有所改变,今天就必须有所行动</h2>
+        <br/>
+        <br/>
+        <br/>
+        <p>LYH  李永华 bukeL</p>
         <p><router-link class="btn btn-primary btn-lg" :to ="{name:'AddPosts'}" role="button">写文章</router-link></p>
       </div>
       <div class="row">
@@ -13,9 +16,8 @@
               <h3 class="panel-title">站点内容统计：</h3>
             </div>
             <ul class="list-group">
-              <li class="list-group-item"><strong>10</strong>篇文章（<strong>2</strong>篇草稿）</li>
-              <li class="list-group-item"><strong>6</strong>个分类</li>
-              <li class="list-group-item"><strong>5</strong>条评论（<strong>1</strong>条待审核）</li>
+              <li class="list-group-item"><strong>{{totalMsg}}</strong>篇文章（<strong>{{DraftedNum}}</strong>篇待审核 )</li>
+              <li class="list-group-item"><strong>{{categoryNum}}</strong>个分类</li>
             </ul>
           </div>
         </div>
@@ -31,16 +33,43 @@
   name: 'my-panel',
   data () {
     return {
+      totalMsg:0,
+      DraftedNum:0,
+      categoryNum:0
     }
   },
   methods:{
-
+    getAllPostsNum(){
+      this.$axios.get('getAllPosts')
+      .then(res =>{
+        // console.log(res)
+        this.totalMsg =res.data[0].num
+      })
+      .catch(err => console.log(err))
+    },
+    getDraftedMsgNum(){
+      this.$axios.get('getDraftedNum')
+      .then(res =>{
+        // console.log(res)
+        this.DraftedNum =res.data[0].num
+      })
+      .catch(err => console.log(err))
+    },
+    geCategoryNum(){
+      this.$axios.get('allCategories')
+      .then(res =>{
+        // console.log(res)
+        this.categoryNum =res.data.length
+      })
+      .catch(err => console.log(err))
+    }
   },
   created(){
-  
+  this.getAllPostsNum()
+  this.getDraftedMsgNum()
+  this.geCategoryNum()
   },
     beforeRouteUpdate(to, from, next){
-     
   }
 }
 </script>
