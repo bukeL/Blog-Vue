@@ -15,22 +15,17 @@ app.use("*", function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With,token");
   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-
-  if (req.method === 'OPTIONS') {
-    res.send(200)
-  } else {
-    next()
-  }
+  next()
 });
 
-//引入模板引擎
-app.engine('html',require('express-art-template'))
+//引入模板引擎,,直接访问接口,返回json数据,,,没用到art-template...art-template是后端模板引擎
+// app.engine('html',require('express-art-template'))
 
-//方便以后设置
-app.set('views', path.join(__dirname, './views/')) // 默认就是 ./views 目录
+//方便以后设置 art-template的默认访问目录
+// app.set('views', path.join(__dirname, './views/')) // 默认就是 ./views 目录
 
-app.use(bodyParser.urlencoded({ extended: false }))
-// parse application/json
+// app.use(bodyParser.urlencoded({ extended: false }))
+// bodyParse 用于解析请求体,是express的核心插件
 app.use(bodyParser.json())
 
 //启动router

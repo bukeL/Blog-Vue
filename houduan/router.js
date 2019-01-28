@@ -200,8 +200,55 @@ router.get('/api/myPostByValue', function (req, res) {
 		//切割数组
 		var result = results
 
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
+})
+
+//后台管理员登录
+router.post('/api/adminLogin', function(req, res) {
+	//一个邮箱的正则表达式,,,防止SQL注入
+	var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
+	var email = req.body.param.myEmail
+	var password = req.body.param.myPassword
+	// console.log(password)
+	if (emailFormat.test(email)) {
+		var sql = `select * from admin where email = '${email}' and password = '${password}'`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		console.log(results.length)
+		if(results.length > 0){
+			res.json({isOk:true})
+		} else {
+			res.json({isOk:false})
+		}
+	})
+	} else{
+		// console.log(4)
+		res.json({isOK:false})
+	}
+	
+	// res.status(200).json({isOk:false})
+})
+
+//input失去焦点 ,拉取头像文件路径
+router.post('/api/getAvatar', function(req, res) {
+	var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
+	var email = req.body.param.myEmail
+	if (emailFormat.test(email)) {
+		var sql = `select avatar from admin where email = '${email}'`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		// console.log(1）
+		console.log(results)
+		res.json(results)
+	})
+	}
 })
 module.exports = router

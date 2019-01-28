@@ -12,6 +12,7 @@ Vue.prototype.$axios = Axios
 
 //引入公共css
 import './assets/css/bootstrap.css'
+import animate from 'animate.css'
 //y引入公共js
 // import 'jquery'
 // 引入自己的css
