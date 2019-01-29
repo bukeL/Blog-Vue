@@ -11,7 +11,6 @@
       </div> -->
       <div class="page-action">
         <!-- show when multiple checked -->
-        <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
         <form class="form-inline">
           <select name="" class="form-control input-sm" v-model="myCatgory">
             <option value="0">所有分类</option>
@@ -84,12 +83,12 @@
   },
   methods:{
     deletePost(id){
-      alert(1)
+      // alert(1)
       this.$axios.get('deletePost',{params:{id:id}})
       .then(res => {
         var mySize = (this.page-1)*10 || 10
         if(res.data.affectedRows == 1){
-          console.log(this.myCatgory,this.myStatus,this.page)
+          // console.log(this.myCatgory,this.myStatus,this.page)
         
         this.getPostAgain(mySize)
                     // this.page = page + 1
@@ -144,8 +143,7 @@
       .then(res => {
         var mySize = (this.page-1)*10 || 10
         if(res.data.affectedRows == 1){
-          console.log(this.myCatgory,this.myStatus,this.page)
-        
+          // console.log(this.myCatgory,this.myStatus,this.page)
         this.getPostAgain(mySize)
                     // this.page = page + 1
                     }

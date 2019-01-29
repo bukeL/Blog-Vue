@@ -8,7 +8,7 @@ var router = express.Router()
 // console.log(json)
 //所有分类
 router.get('/api/allCategories',function (req, res) {
-	var sql = 'select categories.id,name,icon.icon from categories inner join icon on icon.categories_id = categories.id'
+	var sql = 'select categories.id,name,icon.icon,slug from categories inner join icon on icon.categories_id = categories.id'
 	db.query(sql,function(error, results, fields){
 		if(error){
 			console.log(error)
@@ -391,7 +391,25 @@ router.get('/api/deletePost', function(req, res) {
 // console.log(req.query.id)
 	var id = req.query.id || 0
 	var sql = `delete from posts where id in (${id})`
-	console.log(sql)
+	// console.log(sql)
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+})
+
+//增加分类列表
+router.get('/api/insertCategory', function(req, res) {
+// console.log(req.query.id)
+	var name = req.query.name || null
+	var slug = req.query.slug || null
+	var sql = `insert into categories values (null, '${slug}', '${name}');`
+	// console.log(sql)
 	db.query(sql, function(error, results, fields){
 		if(error){
 			console.log(error)

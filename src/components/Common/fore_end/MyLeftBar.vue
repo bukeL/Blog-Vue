@@ -40,7 +40,6 @@ export default {
     serachAllCategories(){
       this.$axios.get('allCategories')
     .then(res => {
-      
       this.categories =res.data
       // console.log(this.categories)
     })
@@ -48,7 +47,6 @@ export default {
       console.log(err)
     })
     }
-
   },
   created () {
     this.serachAllCategories()

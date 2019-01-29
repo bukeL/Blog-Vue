@@ -14,22 +14,19 @@
             <h4 class="myh4">添加新分类目录</h4>
             <div class="form-group">
               <label for="name">名称</label>
-              <input id="name" class="form-control" name="name" type="text" placeholder="分类名称">
+              <input id="name" class="form-control" name="name" type="text" placeholder="分类名称" v-model="name">
             </div>
             <div class="form-group">
               <label for="slug">别名</label>
-              <input id="slug" class="form-control" name="slug" type="text" placeholder="slug">
-              <p class="help-block">https://zce.me/category/<strong>slug</strong></p>
+              <input id="slug" class="form-control" name="slug" type="text" placeholder="slug" v-model="slug">
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <a class="btn btn-primary"  @click="insertCategory(name,slug)">添加</a>
             </div>
           </form>
         </div>
         <div class="col-md-8">
           <div class="page-action">
-            <!-- show when multiple checked -->
-            <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
           </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -41,28 +38,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr v-for="(category,id) in categories" :key="id">
                 <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
+                <td>{{category.name}}</td>
+                <td>{{category.slug}}</td>
                 <td class="text-center">
                   <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
                   <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
@@ -81,13 +60,38 @@
   name: 'my-category',
   data () {
     return {
+      categories:[],
+      name:'',
+      slug:''
     }
   },
   methods:{
-
+    serachAllCategories(){
+      this.$axios.get('allCategories')
+    .then(res => {
+      this.categories =res.data
+      console.log(res.data)
+      // console.log(this.categories)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    },
+    insertCategory (name,slug) {
+      this.$axios.get('insertCategory',{params:{name:name,slug:slug}})
+      .then(res => {
+        console.log(res.data)
+        if(res.data.affectedRows == 1) {
+        this.name =''
+        this.slug=''
+        this.serachAllCategories()
+      }
+      })
+      .catch(err => console.log(err))
+    }
   },
   created(){
-  
+    this.serachAllCategories()
   },
     beforeRouteUpdate(to, from, next){
      
