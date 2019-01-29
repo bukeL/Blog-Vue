@@ -54,7 +54,7 @@
             <td class="text-center">{{post.status}}</td>
             <td class="text-center">
               <a  class="btn btn-default btn-xs" v-if="post.status=='未批准'" @click="changeStatus(post.posts_id)" >允许发表</a>
-              <a  class="btn btn-danger btn-xs">删除</a>
+              <a  class="btn btn-danger btn-xs" @click="deletePost(post.posts_id)">删除</a>
             </td>
           </tr>
         </tbody>
@@ -83,13 +83,27 @@
     }
   },
   methods:{
+    deletePost(id){
+      alert(1)
+      this.$axios.get('deletePost',{params:{id:id}})
+      .then(res => {
+        var mySize = (this.page-1)*10 || 10
+        if(res.data.affectedRows == 1){
+          console.log(this.myCatgory,this.myStatus,this.page)
+        
+        this.getPostAgain(mySize)
+                    // this.page = page + 1
+                    }
+      })
+      .catch(err => console.log(err))
+    },
     searchByIdAndStatus(category,status,page,size){
       this.isShowLoad = true
       this.page =  1
       // console.log(this.myCatgory,this.myStatus)
       this.$axios.get('specialpost',{params:{category:category,status:status,page:page,size:size}}) 
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)  
         if(res.data.length == 0){
           // this.isUnderscore=true
           this.isShowLoad = false

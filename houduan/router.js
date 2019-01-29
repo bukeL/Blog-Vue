@@ -384,4 +384,22 @@ router.get('/api/changeStatus', function(req, res) {
 		res.json(result)
 	})
 })
+
+//通过id删除一片文章
+
+router.get('/api/deletePost', function(req, res) {
+// console.log(req.query.id)
+	var id = req.query.id || 0
+	var sql = `delete from posts where id in (${id})`
+	console.log(sql)
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+})
 module.exports = router
