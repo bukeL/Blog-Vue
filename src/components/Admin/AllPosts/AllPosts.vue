@@ -45,7 +45,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for ="(post,posts_id) in allPosts" :key="posts_id ">
+          <tr v-for ="(post,posts_id in allPosts" :key="posts_id ">
             <td class="text-center"><input type="checkbox"></td>
             <td>{{post.title}}</td>
             <td>{{post.user_name}}</td>
@@ -53,8 +53,8 @@
             <td class="text-center">{{post.created | convertTime('YYYY-MM-DD')}}</td>
             <td class="text-center">{{post.status}}</td>
             <td class="text-center">
-              <a href="javascript:;" class="btn btn-default btn-xs">允许发表</a>
-              <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+              <a  class="btn btn-default btn-xs" v-if="post.status=='未批准'" @click="changeStatus(post.posts_id)" >允许发表</a>
+              <a  class="btn btn-danger btn-xs">删除</a>
             </td>
           </tr>
         </tbody>
@@ -83,12 +83,13 @@
     }
   },
   methods:{
-    searchByIdAndStatus(category,status){
+    searchByIdAndStatus(category,status,page,size){
       this.isShowLoad = true
       this.page =  1
-      console.log(this.myCatgory,this.myStatus)
-      this.$axios.get('specialpost',{params:{category:category,status:status,page:this.page}}) 
+      // console.log(this.myCatgory,this.myStatus)
+      this.$axios.get('specialpost',{params:{category:category,status:status,page:page,size:size}}) 
       .then(res => {
+        console.log(res.data)
         if(res.data.length == 0){
           // this.isUnderscore=true
           this.isShowLoad = false
@@ -98,9 +99,9 @@
       })
       .catch(err => console.log(err))
     },
-    loadMore(category,status,page){
+    loadMore(category,status,page,size){
       // alert(this.isShowLoad)
-      this.$axios.get('specialpost',{params:{category:category,status:status,page:page}}) 
+      this.$axios.get('specialpost',{params:{category:category,status:status,page:page,size:size}}) 
       .then(res => {
         if(res.data.length == 0){
           // this.isUnderscore=true
@@ -115,14 +116,39 @@
     },
     serachAllCategories(){
       this.$axios.get('allCategories')
-    .then(res => {
-      
+      .then(res => {
       this.categories =res.data
       // console.log(this.categories)
     })
     .catch(err => {
       console.log(err)
     })
+    },
+    changeStatus(id){
+      // console.log(event)
+      this.$axios.get('changeStatus',{params:{id:id}})
+      .then(res => {
+        var mySize = (this.page-1)*10 || 10
+        if(res.data.affectedRows == 1){
+          console.log(this.myCatgory,this.myStatus,this.page)
+        
+        this.getPostAgain(mySize)
+                    // this.page = page + 1
+                    }
+      })
+      .catch(err => console.log(err))
+    },
+    getPostAgain(size){
+      this.isShowLoad = true
+      this.$axios.get('specialpost',{params:{category:this.myCatgory,status:this.myStatus,page:1,size:size}}) 
+      .then(res => {
+      if(res.data.length == 0){
+               // this.isUnderscore=true
+        this.isShowLoad = false
+      }
+        this.allPosts = res.data
+      })
+      .catch(err => console.log(err))
     }
   },
   created(){
@@ -133,7 +159,7 @@
     this.myStatus = this.$route.query.myStatus || 0;
     // alert(this.page)
     // alert(this.page)
-    this.searchByIdAndStatus(this.myCatgory,this.myStatus)
+    this.searchByIdAndStatus(this.myCatgory,this.myStatus,this.page)
   },
   watch:{
     $route(to,from,next){
@@ -143,7 +169,7 @@
       this.page= to.query.page || 1
       this.myCatgory =to.query.myCatgory || 0
       this.myStatus =to.query.myStatus || 0
-      this.searchByIdAndStatus(this.myCatgory,this.myStatus)
+      this.searchByIdAndStatus(this.myCatgory,this.myStatus,this.page)
       // console.log(this.categoriyPost)  
       // alert(this.listId)
       // alert(to.query.page)

@@ -368,4 +368,20 @@ router.get('/api/specialpost',function(req, res) {
 		res.json(result)
 	})
 })
+
+//允许文章发布的api, 点击更改文章状态
+router.get('/api/changeStatus', function(req, res) {
+// console.log(req.query.id)
+	var id = req.query.id || 0
+	var sql = `update posts set status ='已发布' where id = ${id}`
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+})
 module.exports = router
