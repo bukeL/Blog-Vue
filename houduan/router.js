@@ -420,4 +420,40 @@ router.get('/api/insertCategory', function(req, res) {
 		res.json(result)
 	})
 })
+
+
+// 通过id删除分类deleteCategory
+router.get('/api/deleteCategory',function(req, res) {
+	console.log(req.query.id)
+	var id = req.query.id || null
+	var sql= `delete from categories where id in (${id})`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+})
+
+//修改目录名称 
+router.get('/api/updateCategory', function(req, res) {
+	var id = req.query.id || null
+	var name = req.query.name || null
+	var slug = req.query.slug || null
+	console.log(id,name,slug)
+	var sql =`update categories set slug = '${slug}', name = '${name}' where id = ${id}`
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+
+})
 module.exports = router

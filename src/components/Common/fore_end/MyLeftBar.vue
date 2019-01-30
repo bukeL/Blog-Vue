@@ -35,7 +35,7 @@ export default {
   },
   methods:{
     searchByKey:function () {
-      this.$router.push({name:'Detail',query:{value:this.myValue}})
+      this.$router.push({name:'Detail',query:{value:this.myValue.trim()}})
     },
     serachAllCategories(){
       this.$axios.get('allCategories')

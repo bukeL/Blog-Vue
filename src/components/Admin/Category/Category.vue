@@ -11,7 +11,7 @@
       <div class="row">
         <div class="col-md-4">
           <form>
-            <h4 class="myh4">添加新分类目录</h4>
+            <h4 class="myh4">{{mytitle}}</h4>
             <div class="form-group">
               <label for="name">名称</label>
               <input id="name" class="form-control" name="name" type="text" placeholder="分类名称" v-model="name">
@@ -21,7 +21,9 @@
               <input id="slug" class="form-control" name="slug" type="text" placeholder="slug" v-model="slug">
             </div>
             <div class="form-group">
-              <a class="btn btn-primary"  @click="insertCategory(name,slug)">添加</a>
+              <a class="btn btn-primary"  @click="insertCategory(name,slug)" v-if="isExist">添加</a>
+              <a class="btn btn-primary"  @click="submitCategory(id,name,slug)" v-if="!isExist">提交修改</a>
+              <a class="btn btn-primary"  @click="changeText" v-if="!isExist">回去添加</a>
             </div>
           </form>
         </div>
@@ -43,8 +45,8 @@
                 <td>{{category.name}}</td>
                 <td>{{category.slug}}</td>
                 <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+                  <a href="javascript:;" class="btn btn-info btn-xs" @click="editCategory(category.id,category.name,category.slug)">编辑</a>
+                  <a href="javascript:;" class="btn btn-danger btn-xs" @click="deleteCategory(category.id)">删除</a>
                 </td>
               </tr>
             </tbody>
@@ -62,7 +64,10 @@
     return {
       categories:[],
       name:'',
-      slug:''
+      slug:'',
+      mytitle:'添加新分类目录',
+      isExist:true,
+      id:0
     }
   },
   methods:{
@@ -80,11 +85,46 @@
     insertCategory (name,slug) {
       this.$axios.get('insertCategory',{params:{name:name,slug:slug}})
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         if(res.data.affectedRows == 1) {
         this.name =''
         this.slug=''
         this.serachAllCategories()
+      }
+      })
+      .catch(err => console.log(err))
+    },
+    deleteCategory (id) {
+      this.$axios.get('deleteCategory',{params:{id:id}})
+      .then(res => {
+        if(res.data.affectedRows == 1) {
+          this.serachAllCategories()
+      }
+      })
+      .catch(err => console.log(err))
+    },
+    editCategory(id,name,slug){
+      console.log(id,name,slug)
+      this.mytitle = '编辑分类目录'
+      this.isExist = false
+      this.name = name
+      this.slug = slug
+      this.id = id
+    },
+    changeText () {
+      this.mytitle = '添加分类目录'
+      this.isExist = true
+    },
+    submitCategory(id,name,slug) {
+      this.$axios.get('updateCategory',{params:{id:id,name:name,slug:slug}})
+      .then(res => {
+        // console.log(res)
+        if(res.data.affectedRows == 1) {
+          // this.serachAllCategories()
+          this.changeText()
+          this.serachAllCategories()
+          this.name = ''
+          this.slug = ''
       }
       })
       .catch(err => console.log(err))
@@ -94,7 +134,8 @@
     this.serachAllCategories()
   },
     beforeRouteUpdate(to, from, next){
-     
+     // alert(1)
+     //做不到,需要采用监听的方式
   }
 }
 </script>
