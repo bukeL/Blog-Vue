@@ -454,6 +454,84 @@ router.get('/api/updateCategory', function(req, res) {
 		console.log(result)
 		res.json(result)
 	})
+})
 
+//查询所有用户findAllUSers
+router.get('/api/findAllUsers', function(req, res) {
+	var nowPage = req.query.page || 1
+	var size = req.query.size || 10
+	var offset = (nowPage - 1)* size 
+	var sql = `select * from users limit ${offset},${size};`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
+})
+
+
+//添加一个用户
+router.post('/api/insertUser', function(req, res) {
+	// console.log(req.query.id)req.body.param.myEmail
+	// console.log(req.body.params)
+	var email = req.body.params.email || null
+	var slug = req.body.params.slug  || null
+	var nickname = req.body.params.nickname || null
+	var password = req.body.params.password  || null
+	// console.log(email,slug,nickname,password)
+	if(email==null || slug==null || nickname==null || password==null){
+		res.json({msg:'任意一项不能为空'})
+		return
+	}
+	var sql = `insert into users (id,email, slug, nickname,password) values (null,'${email}', '${slug}','${nickname}','${password}')`
+	// console.log(sql)
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+})
+//删除一个用户
+router.get('/api/deleteUser',function(req, res) {
+	console.log(req.query.id)
+	var id = req.query.id || null
+	var sql= `delete from users where id in (${id})`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+})
+
+//更新用户信息updateUser
+router.post('/api/updateUser', function(req, res) {
+	var id = req.body.params.id || null
+	var email = req.body.params.email || null
+	var slug = req.body.params.slug  || null
+	var nickname = req.body.params.nickname || null
+	var password = req.body.params.password  || null
+	// console.log(id,name,slug)
+	var sql =`update users set slug = '${slug}',email = '${email}',nickname = '${nickname}',password = '${password}' where id = ${id}`
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
 })
 module.exports = router

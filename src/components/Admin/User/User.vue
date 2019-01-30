@@ -4,33 +4,30 @@
       <div class="page-title">
         <h1>用户</h1>
       </div>
-      <!-- 有错误信息时展示 -->
-      <!-- <div class="alert alert-danger">
-        <strong>错误！</strong>发生XXX错误
-      </div> -->
       <div class="row">
         <div class="col-md-4">
           <form>
-            <h4 class="myh4">添加新用户</h4>
+            <h4 class="myh4">{{mytitle}}</h4>
             <div class="form-group">
               <label for="email">邮箱</label>
-              <input id="email" class="form-control" name="email" type="email" placeholder="邮箱">
+              <input id="email" class="form-control" name="email" type="email" placeholder="邮箱" v-model="email">
             </div>
             <div class="form-group">
               <label for="slug">别名</label>
-              <input id="slug" class="form-control" name="slug" type="text" placeholder="slug">
-              <p class="help-block">https://zce.me/author/<strong>slug</strong></p>
+              <input id="slug" class="form-control" name="slug" type="text" placeholder="slug" v-model="slug">
             </div>
             <div class="form-group">
               <label for="nickname">昵称</label>
-              <input id="nickname" class="form-control" name="nickname" type="text" placeholder="昵称">
+              <input id="nickname" class="form-control" name="nickname" type="text" placeholder="昵称" v-model="nickname">
             </div>
             <div class="form-group">
               <label for="password">密码</label>
-              <input id="password" class="form-control" name="password" type="text" placeholder="密码">
+              <input id="password" class="form-control" name="password" type="text" placeholder="密码" v-model="password">
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <a class="btn btn-primary" type="submit" @click="insertUser(email,slug,nickname,password)" v-if="isExist">添加</a>
+              <a class="btn btn-primary"  @click="submitEditUser(id,email,slug,nickname,password)" v-if="!isExist">提交修改</a>
+              <a class="btn btn-primary"  @click="changeText" v-if="!isExist">回去添加</a>
             </div>
           </form>
         </div>
@@ -47,45 +44,21 @@
                 <th>邮箱</th>
                 <th>别名</th>
                 <th>昵称</th>
-                <th>状态</th>
+                <!-- <th>状态</th> -->
                 <th class="text-center" width="100">操作</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr v-for = "(user,index) in users" :key="index">
                 <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="../../../assets/img/default.png"></td>
-                <td>i@zce.me</td>
-                <td>zce</td>
-                <td>汪磊</td>
-                <td>激活</td>
+                <td class="text-center"><img class="avatar" :src="user.avatar"></td>
+                <td>{{user.email}}</td>
+                <td>{{user.slug}}</td>
+                <td>{{user.nickname}}</td>
+                <!-- <td>激活</td> -->
                 <td class="text-center">
-                  <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="../../../assets/img/default.png"></td>
-                <td>i@zce.me</td>
-                <td>zce</td>
-                <td>汪磊</td>
-                <td>激活</td>
-                <td class="text-center">
-                  <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="../../../assets/img/default.png"></td>
-                <td>i@zce.me</td>
-                <td>zce</td>
-                <td>汪磊</td>
-                <td>激活</td>
-                <td class="text-center">
-                  <a href="post-add.php" class="btn btn-default btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+                  <a  class="btn btn-default btn-xs" @click="editUser(user.id,user.email,user.slug,user.nickname,user.password)">编辑</a>
+                  <a  class="btn btn-danger btn-xs" @click="deleteUser(user.id)">删除</a>
                 </td>
               </tr>
             </tbody>
@@ -101,13 +74,81 @@
   name: 'my-category',
   data () {
     return {
+      users: [],
+      email:'',
+      slug:'',
+      nickname:'',
+      password:'',
+      mytitle:'添加新用户',
+      isExist:true,
+      id:0
     }
   },
   methods:{
-
+    findAllUsers(){
+      this.$axios.get('findAllUsers')
+      .then(res => {
+        console.log(res.data)
+         this.users = res.data
+      })
+      .catch(err => console.log(err))
+    },
+    insertUser (email,slug,nickname,password) {
+      this.$axios.post('insertUser',{params:{email:email,slug:slug,nickname:nickname,password:password}})
+      .then(res => {
+        if(res.data.affectedRows == 1) {
+          this.email  = ''
+          this.slug = ''
+          this.nickname = ''
+          this.password = ''
+          this.findAllUsers()
+      }
+      })
+      .catch(err => console.log(err))
+    },
+    deleteUser (id) {
+      this.$axios.get('deleteUser',{params:{id:id}})
+      .then(res => {
+        if(res.data.affectedRows == 1) {
+          this.findAllUsers()
+      }
+      })
+      .catch(err => console.log(err))
+    },
+    editUser(id,email,slug,nickname,password){
+      // console.log(id,name,slug)
+      this.mytitle = '编辑用户信息'
+      this.isExist = false
+      this.email = email
+      this.slug = slug
+      this.id = id
+      this.nickname = nickname
+      this.password = password
+    },
+    changeText () {
+      this.mytitle = '添加新用户'
+      this.isExist = true
+    },
+    submitEditUser(id,email,slug,nickname,password) {
+      // console.log(id,email,slug,nickname,password)
+      this.$axios.post('updateUser',{params:{id:id,email:email,slug:slug,nickname:nickname,password:password}})
+      .then(res => {
+        // console.log(res)
+        if(res.data.affectedRows == 1) {
+          // this.serachAllCategories()
+          this.changeText()
+          this.findAllUsers()
+          this.email = ''
+          this.slug = ''
+          this.nickname = ''
+          this.password = ''
+      }
+      })
+      .catch(err => console.log(err))
+    }
   },
   created(){
-  
+  this.findAllUsers()
   },
     beforeRouteUpdate(to, from, next){
      
