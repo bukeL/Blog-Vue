@@ -1,5 +1,7 @@
 <template>
 	<div class="header">
+      <a href="" class="btn btn-info " style="width: 90px">登录</a>
+      <a href="" class="btn btn-info " style="width: 90px">注册</a>
       <h1 class="logo">
         <router-link :to = "{name:'Home'}"><img src="../../../assets/img/logo.png" alt="">
         </router-link>

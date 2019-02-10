@@ -86,6 +86,10 @@
       // alert(1)
       this.$axios.get('deletePost',{params:{id:id}})
       .then(res => {
+        if(res.data.code == -1){
+          alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         var mySize = (this.page-1)*10 || 10
         if(res.data.affectedRows == 1){
           // console.log(this.myCatgory,this.myStatus,this.page)
@@ -102,6 +106,10 @@
       // console.log(this.myCatgory,this.myStatus)
       this.$axios.get('specialpost',{params:{category:category,status:status,page:page,size:size}}) 
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         // console.log(res.data)  
         if(res.data.length == 0){
           // this.isUnderscore=true
@@ -116,6 +124,10 @@
       // alert(this.isShowLoad)
       this.$axios.get('specialpost',{params:{category:category,status:status,page:page,size:size}}) 
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         if(res.data.length == 0){
           // this.isUnderscore=true
           this.isShowLoad = false
@@ -130,6 +142,10 @@
     serachAllCategories(){
       this.$axios.get('allCategories')
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
       this.categories =res.data
       // console.log(this.categories)
     })
@@ -141,6 +157,10 @@
       // console.log(event)
       this.$axios.get('changeStatus',{params:{id:id}})
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         var mySize = (this.page-1)*10 || 10
         if(res.data.affectedRows == 1){
           // console.log(this.myCatgory,this.myStatus,this.page)
@@ -154,6 +174,10 @@
       this.isShowLoad = true
       this.$axios.get('specialpost',{params:{category:this.myCatgory,status:this.myStatus,page:1,size:size}}) 
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
       if(res.data.length == 0){
                // this.isUnderscore=true
         this.isShowLoad = false

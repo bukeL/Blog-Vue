@@ -1,20 +1,34 @@
 //引入自己写好的组件
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home/Home'
-import List from '@/components/List/List'
-import Detail from '@/components/Detail/Detail'
-import MyLeftBar from '@/components/Common/fore_end/MyLeftBar'
-import MyRightBar from '@/components/Common/fore_end/MyRightBar'
-import AdminLogin from '@/components/Admin/AdminLogin/Login'
-import AdminHome from '@/components/Admin/AdminHome/AdminHome'
-import AllPosts from '@/components/Admin/AllPosts/AdminPosts'
-import AddPosts from '@/components/Admin/AddPosts/AdminAddPosts'
-import Category from '@/components/Admin/Category/AdminCategory'
-import AdminUser from '@/components/Admin/User/AdminUser'
-import MyAside from '@/components/Common/Backstage/MyAside'
-import MyNavbar from '@/components/Common/Backstage/MyNavbar'
-import Personal from '@/components/Admin/Personal/AdminPersonal'
+// import Home from '@/components/Home/Home'
+// import List from '@/components/List/List'
+// import Detail from '@/components/Detail/Detail'
+// import MyLeftBar from '@/components/Common/fore_end/MyLeftBar'
+// import MyRightBar from '@/components/Common/fore_end/MyRightBar'
+// import AdminLogin from '@/components/Admin/AdminLogin/Login'
+// import AdminHome from '@/components/Admin/AdminHome/AdminHome'
+// import AllPosts from '@/components/Admin/AllPosts/AdminPosts'
+// import AddPosts from '@/components/Admin/AddPosts/AdminAddPosts'
+// import Category from '@/components/Admin/Category/AdminCategory'
+// import AdminUser from '@/components/Admin/User/AdminUser'
+// import MyAside from '@/components/Common/Backstage/MyAside'
+// import MyNavbar from '@/components/Common/Backstage/MyNavbar'
+// import Personal from '@/components/Admin/Personal/AdminPersonal'
+const Home = () => import ('@/components/Home/Home')
+const List = () => import ('@/components/List/List')
+const Detail = () => import ('@/components/Detail/Detail')
+const MyLeftBar = () => import ('@/components/Common/fore_end/MyLeftBar')
+const MyRightBar = () => import ('@/components/Common/fore_end/MyRightBar')
+const AdminLogin = () => import ('@/components/Admin/AdminLogin/Login')
+const AdminHome = () => import ('@/components/Admin/AdminHome/AdminHome')
+const AllPosts = () => import ('@/components/Admin/AllPosts/AdminPosts')
+const AddPosts = () => import ('@/components/Admin/AddPosts/AdminAddPosts')
+const Category = () => import ('@/components/Admin/Category/AdminCategory')
+const AdminUser = () => import ('@/components/Admin/User/AdminUser')
+const MyAside = () => import ('@/components/Common/Backstage/MyAside')
+const MyNavbar = () => import ('@/components/Common/Backstage/MyNavbar')
+const Personal = () => import ('@/components/Admin/Personal/AdminPersonal')
 Vue.use(Router)  //注册全局路由 $router 和$route
 //将所有组件挂载
 

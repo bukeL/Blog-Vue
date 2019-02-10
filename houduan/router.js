@@ -1,12 +1,12 @@
 var express = require('express')
+var upload = require('./multer/multer.js')
 // var json = require('./api/categories.js')
 var db = require('./api/mysql.js')
 // console.log(json)
 var router = express.Router()
-
-
 // console.log(json)
 //所有分类
+
 router.get('/api/allCategories',function (req, res) {
 	var sql = 'select categories.id,name,icon.icon,slug from categories inner join icon on icon.categories_id = categories.id'
 	db.query(sql,function(error, results, fields){
@@ -219,6 +219,13 @@ router.post('/api/adminLogin', function(req, res) {
 			console.log(error)
 			return
 		}
+		// console.log(results.id)
+		// var result = JSON.parse(results)
+		
+		var result = JSON.parse(JSON.stringify(results))
+		console.log(result[0].id)
+		req.session.user = result[0]
+
 		res.json(results)
 	})
 	} else{
@@ -241,13 +248,21 @@ router.post('/api/getAvatar', function(req, res) {
 			return
 		}
 		// console.log(1）
-		console.log(results)
-		res.json(results)
+		// console.log(results)
+		res.status(200).json(results)
 	})
 	}
 })
 //获取所有文章数量以及未批准的数量
 router.get('/api/getAllPosts', function(req, res) {
+	// console.log(req.session.user)
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
  var sql = 'select count(1) as num from posts'
  db.query(sql, function(error, results, fields){
 		if(error){
@@ -261,6 +276,13 @@ router.get('/api/getAllPosts', function(req, res) {
 })
 //获取未批准文章的数量
 router.get('/api/getDraftedNum', function(req, res) {
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
  var sql = 'select count(1) as num from posts where status="未批准"'
  db.query(sql, function(error, results, fields){
 		if(error){
@@ -275,6 +297,13 @@ router.get('/api/getDraftedNum', function(req, res) {
 
 //查询所有文章,
 router.get('/api/myAllPosts', function (req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	var size = parseInt(req.query.size) || 4
 	//当前页码
 	var nowPage = parseInt(req.query.page) || 1 
@@ -314,6 +343,13 @@ router.get('/api/myAllPosts', function (req, res) {
 	})
 })
 router.get('/api/specialpost',function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	console.log(req.query)
 	var category = req.query.category || 0
 	var status = req.query.status || 0
@@ -371,6 +407,13 @@ router.get('/api/specialpost',function(req, res) {
 
 //允许文章发布的api, 点击更改文章状态
 router.get('/api/changeStatus', function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 // console.log(req.query.id)
 	var id = req.query.id || 0
 	var sql = `update posts set status ='已发布' where id = ${id}`
@@ -388,6 +431,13 @@ router.get('/api/changeStatus', function(req, res) {
 //通过id删除一片文章
 
 router.get('/api/deletePost', function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 // console.log(req.query.id)
 	var id = req.query.id || 0
 	var sql = `delete from posts where id in (${id})`
@@ -405,6 +455,13 @@ router.get('/api/deletePost', function(req, res) {
 
 //增加分类列表
 router.get('/api/insertCategory', function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 // console.log(req.query.id)
 	var name = req.query.name || null
 	var slug = req.query.slug || null
@@ -424,6 +481,13 @@ router.get('/api/insertCategory', function(req, res) {
 
 // 通过id删除分类deleteCategory
 router.get('/api/deleteCategory',function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	console.log(req.query.id)
 	var id = req.query.id || null
 	var sql= `delete from categories where id in (${id})`
@@ -440,6 +504,13 @@ router.get('/api/deleteCategory',function(req, res) {
 
 //修改目录名称 
 router.get('/api/updateCategory', function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	var id = req.query.id || null
 	var name = req.query.name || null
 	var slug = req.query.slug || null
@@ -458,6 +529,13 @@ router.get('/api/updateCategory', function(req, res) {
 
 //查询所有用户findAllUSers
 router.get('/api/findAllUsers', function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	var nowPage = req.query.page || 1
 	var size = req.query.size || 10
 	var offset = (nowPage - 1)* size 
@@ -476,6 +554,13 @@ router.get('/api/findAllUsers', function(req, res) {
 
 //添加一个用户
 router.post('/api/insertUser', function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	// console.log(req.query.id)req.body.param.myEmail
 	// console.log(req.body.params)
 	var email = req.body.params.email || null
@@ -501,6 +586,13 @@ router.post('/api/insertUser', function(req, res) {
 })
 //删除一个用户
 router.get('/api/deleteUser',function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	console.log(req.query.id)
 	var id = req.query.id || null
 	var sql= `delete from users where id in (${id})`
@@ -517,6 +609,13 @@ router.get('/api/deleteUser',function(req, res) {
 
 //更新用户信息updateUser
 router.post('/api/updateUser', function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
 	var id = req.body.params.id || null
 	var email = req.body.params.email || null
 	var slug = req.body.params.slug  || null
@@ -533,5 +632,48 @@ router.post('/api/updateUser', function(req, res) {
 		console.log(result)
 		res.json(result)
 	})
+})
+
+//上传文章
+router.post('/api/addPosts', upload.single('feature'),function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+		var id = req.session.user.id
+		// res.json(req.body)
+		var title = req.body.title
+		var content = req.body.content
+		var slug = req.body.slug
+		var feature = 'http://localhost:3000/' + req.file.path
+		var category = req.body.category
+		var created = req.body.created
+		var status = req.body.status
+		// console.log(feature)
+		// console.log(req.file)
+		// res.json({a:req.body,b:req.file})
+		var sql =`insert into posts values 
+		(null, '${slug}', '${title}', '${feature}', '${created}','${content}','0','0','${status}','${id}','${category}');`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		console.log(result)
+		res.json(result)
+	})
+
+})
+
+router.get('/api/loginOut',function(req,res){
+	 delete req.session.user;
+     res.json({
+     	code:1,
+     	msg:'退出登录'
+     })
 })
 module.exports = router

@@ -88,6 +88,10 @@
     findAllUsers(){
       this.$axios.get('findAllUsers')
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         console.log(res.data)
          this.users = res.data
       })
@@ -96,6 +100,10 @@
     insertUser (email,slug,nickname,password) {
       this.$axios.post('insertUser',{params:{email:email,slug:slug,nickname:nickname,password:password}})
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         if(res.data.affectedRows == 1) {
           this.email  = ''
           this.slug = ''
@@ -109,6 +117,10 @@
     deleteUser (id) {
       this.$axios.get('deleteUser',{params:{id:id}})
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         if(res.data.affectedRows == 1) {
           this.findAllUsers()
       }
@@ -133,6 +145,10 @@
       // console.log(id,email,slug,nickname,password)
       this.$axios.post('updateUser',{params:{id:id,email:email,slug:slug,nickname:nickname,password:password}})
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         // console.log(res)
         if(res.data.affectedRows == 1) {
           // this.serachAllCategories()

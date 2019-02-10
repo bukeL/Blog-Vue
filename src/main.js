@@ -4,12 +4,47 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Axios from 'axios'
-
+import Vuex from 'vuex'
 //配置公共的url
 Axios.defaults.baseURL = 'http://127.0.0.1:3000/api/'
 //配置axios
+Axios.defaults.withCredentials=true
 Vue.prototype.$axios = Axios
 
+//使用vuex
+Vue.use(Vuex)
+let store  =new Vuex.Store({
+	state:{
+		// userId:'',
+		nickname:'',
+		avatar:'/assest/img/default.png',
+	},
+	getters:{
+		getNickname(state){
+			return state.nickname
+		},
+		getAvatar(state){
+			return state.avatar
+		}
+		// getUserId(state){
+		// 	return state.userId
+		// }
+	},
+	mutations:{
+		// updateUserId(state,userId) {
+		// 	state.userId = userId
+		// 	window.localStorage.setItem('userId', state.userId);
+		// },
+		updateUserNickname(state,nickname) {
+			state.nickname = nickname
+			window.localStorage.setItem('nickname', state.nickname);
+		},
+		updateUserAvatar(state,avatar) {
+			state.avatar = avatar
+			window.localStorage.setItem('avatar', state.avatar);
+		},
+	}
+})
 //引入公共css
 import './assets/css/bootstrap.css'
 import animate from 'animate.css'
@@ -60,10 +95,15 @@ Vue.filter('convertTime',function (data,formatStr) {
 	return Moment(data).format(formatStr)
 })
 
+//1 引入vuex
+//2 创建store
+//3 配置store中的数据/存/取
+//4 将store对象关联进Vue实例
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

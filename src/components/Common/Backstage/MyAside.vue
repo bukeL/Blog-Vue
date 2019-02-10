@@ -1,8 +1,8 @@
 <template>
   <div class="aside">
     <div class="profile">
-      <img class="avatar" :src="myImg">
-      <h3 class="name">{{adminName}}</h3>
+      <img class="avatar" :src="showUseravatar">
+      <h3 class="name">{{showUserNickname}}</h3>
     </div>
     <ul class="nav">
       <li :class="show==1?active:''"  @click ="ybShow">
@@ -70,15 +70,32 @@
       adminName:''
     }
   },
+  computed:{
+    showUserNickname(){
+      let nickname = window.localStorage.getItem('nickname')
+        if(this.$store.state.nickname=== '' && nickname){
+          this.$store.commit('updateUserNickname',nickname)//同步操作
+        }
+      return this.$store.getters.getNickname
+    },
+    showUseravatar(){
+       let avatar = window.localStorage.getItem('avatar')
+        if(this.$store.state.avatar=== '/assest/img/default.png' && avatar){
+          this.$store.commit('updateUserAvatar',avatar)//同步操作
+        }
+      return this.$store.getters.getAvatar
+    }
+  },
   created(){
+
     // this.$nextTick(function(){
     //    EventBus.$on('sendAvatar',data => {
     //   console.log(data)
     //   this.img = data.avatar
     // })
     // })
-    this.myImg = this.$route.params.avatar
-    this.adminName = this.$route.params.nickname
+    // this.myImg = this.$route.params.avatar
+    // this.adminName = this.$route.params.nickname
      // console.log(this.$route)
     // console.log(this.myImg)
       

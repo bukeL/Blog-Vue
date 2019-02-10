@@ -4,7 +4,7 @@
       <button class="btn btn-default navbar-btn fa fa-bars"></button>
       <ul class="nav navbar-nav navbar-right">
         <li><router-link :to = "{name:'Personal'}"><i class="fa fa-user"></i>个人中心</router-link></li>
-        <li><router-link :to = "{name:'AdminLogin'}"><i class="fa fa-user"></i>退出</router-link></li>
+        <li><a @click="loginOut"><i class="fa fa-user"></i>退出</a></li>
       </ul>
     </nav>
 </div>
@@ -18,7 +18,18 @@
     }
   },
   methods:{
-
+    loginOut(){
+      this.$axios.get('loginOut')
+      .then(res => {
+        if(res.data.code = 1){
+          this.$router.push({name:'AdminLogin'})
+          // this.$store.commit('updateUserId','')
+          this.$store.commit('updateUserNickname','')
+          this.$store.commit('updateUserAvatar','/assest/img/default.png')
+        }
+      })
+      .catch(err => console.log(err))
+    }
   },
   created(){
   

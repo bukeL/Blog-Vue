@@ -25,7 +25,6 @@
             </router-link>
           </div>
         </div>
-        
         <div v-show ="isShow" ><p class="noCategories">已经没有了哦</p></div>
         <p class="load" @click="loadMore()" v-show ="!isShow">加载更多{{this.page}}</p>
         <p class="underscore" v-show="isShow">------------------------------我也是有底线的------------------------------</p>

@@ -43,8 +43,16 @@
         // console.log(res)
         if(res.data.length > 0) {
           // console.log(res.data[0])
-          var params = JSON.stringify(res.data[0])
-          this.$router.push({name:'AdminHome',params:{avatar:this.img,nickname:res.data[0].nickname}}) //输入正确的用户名密码,跳到主页去
+          // var params = JSON.stringify(res.data[0])
+          // var userInfo = {userId:res.data[0].id,nickname:res.data[0].nickname,avatar:this.img}
+          var userID = res.data[0].id
+          var Nickname = res.data[0].nickname
+          var avatar = this.img
+          // console.log(userInfo)
+          this.$store.commit("updateUserId",userID)
+          this.$store.commit("updateUserNickname",Nickname)
+          this.$store.commit("updateUserAvatar",avatar)
+          this.$router.push({name:'AdminHome'}) //输入正确的用户名密码,跳到主页去
           // EventBus.$emit('sendAvatar',this.img)
           // alert('123')
         } else {

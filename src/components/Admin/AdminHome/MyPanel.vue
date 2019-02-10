@@ -42,7 +42,11 @@
     getAllPostsNum(){
       this.$axios.get('getAllPosts')
       .then(res =>{
-        // console.log(res)
+        console.log(res.data)
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         this.totalMsg =res.data[0].num
       })
       .catch(err => console.log(err))
@@ -51,6 +55,10 @@
       this.$axios.get('getDraftedNum')
       .then(res =>{
         // console.log(res)
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         this.DraftedNum =res.data[0].num
       })
       .catch(err => console.log(err))

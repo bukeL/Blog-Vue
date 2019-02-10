@@ -74,6 +74,10 @@
     serachAllCategories(){
       this.$axios.get('allCategories')
     .then(res => {
+      if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
       this.categories =res.data
       console.log(res.data)
       // console.log(this.categories)
@@ -85,6 +89,10 @@
     insertCategory (name,slug) {
       this.$axios.get('insertCategory',{params:{name:name,slug:slug}})
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         // console.log(res.data)
         if(res.data.affectedRows == 1) {
         this.name =''
@@ -97,6 +105,10 @@
     deleteCategory (id) {
       this.$axios.get('deleteCategory',{params:{id:id}})
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         if(res.data.affectedRows == 1) {
           this.serachAllCategories()
       }
@@ -118,6 +130,10 @@
     submitCategory(id,name,slug) {
       this.$axios.get('updateCategory',{params:{id:id,name:name,slug:slug}})
       .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
         // console.log(res)
         if(res.data.affectedRows == 1) {
           // this.serachAllCategories()
