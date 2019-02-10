@@ -4,6 +4,7 @@ var upload = require('./multer/multer.js')
 var db = require('./api/mysql.js')
 // console.log(json)
 var router = express.Router()
+var path = require('path')
 // console.log(json)
 //所有分类
 
@@ -648,13 +649,14 @@ router.post('/api/addPosts', upload.single('feature'),function(req, res) {
 		var title = req.body.title
 		var content = req.body.content
 		var slug = req.body.slug
-		var feature = 'http://localhost:3000/' + req.file.path
+		var feature = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
 		var category = req.body.category
 		var created = req.body.created
 		var status = req.body.status
 		// console.log(feature)
 		// console.log(req.file)
 		// res.json({a:req.body,b:req.file})
+		// console.log(req.file)
 		var sql =`insert into posts values 
 		(null, '${slug}', '${title}', '${feature}', '${created}','${content}','0','0','${status}','${id}','${category}');`
 		db.query(sql, function(error, results, fields){

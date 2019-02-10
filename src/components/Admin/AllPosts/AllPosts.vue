@@ -21,7 +21,7 @@
             <option value="已发布">已发布</option>
             <option value="未批准">未批准</option>
           </select>
-          <button class="btn btn-default btn-sm" @click="searchByIdAndStatus(myCatgory,myStatus)">筛选</button>
+          <a class="btn btn-default btn-sm" @click="searchByIdAndStatus(myCatgory,myStatus)">筛选</a>
         </form>
 <!--         <ul class="pagination pagination-sm pull-right">
           <li><a href="#">上一页</a></li>

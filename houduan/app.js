@@ -35,7 +35,7 @@ app.use(session({
     resave : true,
     saveUninitialized: false, // 是否保存未初始化的会话
     cookie : {
-        maxAge : 1000*60*30, // 设置 session 的有效时间，单位毫秒
+        maxAge : 1000*60*30, // 设置 session 的有效时间为30分钟，单位毫秒
     },
 }));
 //引入模板引擎,,直接访问接口,返回json数据,,,没用到art-template...art-template是后端模板引擎
