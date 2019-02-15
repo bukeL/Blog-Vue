@@ -5,7 +5,7 @@
         <div class="body search">
         <form>
           <input type="text" class="keys" placeholder="输入关键字" v-model="myValue">
-          <input type="submit" class="btn" value="搜索" @click = "searchByKey">
+          <input  type="button" class="btn" value="搜索" @click = "searchByKey">
         </form>
         </div>
       </div>
@@ -37,7 +37,12 @@ export default {
   },
   methods:{
     searchByKey:function () {
-      this.$router.push({name:'Detail',query:{value:this.myValue}})
+      if(this.myValue.trim()==''){
+        alert('亲,请输入要搜索的文章')
+        this.myValue = ''
+        return 
+      }
+      this.$router.push({name:'Detail',query:{value:this.myValue.trim()}})
     }
   },
     created () {
