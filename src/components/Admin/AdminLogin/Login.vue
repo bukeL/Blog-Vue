@@ -49,7 +49,7 @@
           var Nickname = res.data[0].nickname
           var avatar = this.img
           // console.log(userInfo)
-          this.$store.commit("updateUserId",userID)
+          // this.$store.commit("updateUserId",userID)
           this.$store.commit("updateUserNickname",Nickname)
           this.$store.commit("updateUserAvatar",avatar)
           this.$router.push({name:'AdminHome'}) //输入正确的用户名密码,跳到主页去

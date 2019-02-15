@@ -74,7 +74,7 @@
   },
   methods:{
     submitForm(){
-      var form = document.getElementById('myForm')
+      // var form = document.getElementById('myForm')
       // var formData = new FormData(form)
       var fd = new FormData()
       fd.append('title', this.formObj.title)

@@ -60,7 +60,7 @@ router.get('/api/myCategoriyPost', function (req, res) {
 	var size = parseInt(req.query.size) || 4
 	//当前页码
 	var nowPage = parseInt(req.query.page) || 1 
-	console.log(nowPage)
+	// console.log(nowPage)
 	if(nowPage < 1){
 		nowPage = 1
 	}
@@ -224,7 +224,7 @@ router.post('/api/adminLogin', function(req, res) {
 		// var result = JSON.parse(results)
 		
 		var result = JSON.parse(JSON.stringify(results))
-		console.log(result[0].id)
+		// console.log(result[0].id)
 		req.session.user = result[0]
 
 		res.json(results)
@@ -271,7 +271,7 @@ router.get('/api/getAllPosts', function(req, res) {
 			return
 		}
 		// console.log(1）
-		console.log(results)
+		// console.log(results)
 		res.json(results)
 	})
 })
@@ -291,7 +291,7 @@ router.get('/api/getDraftedNum', function(req, res) {
 			return
 		}
 		// console.log(1）
-		console.log(results)
+		// console.log(results)
 		res.json(results)
 	})
 })
@@ -351,7 +351,7 @@ router.get('/api/specialpost',function(req, res) {
 		})
 		return
 	}
-	console.log(req.query)
+	// console.log(req.query)
 	var category = req.query.category || 0
 	var status = req.query.status || 0
 	var nowPage = req.query.page || 1
@@ -359,7 +359,7 @@ router.get('/api/specialpost',function(req, res) {
 		if(nowPage < 1){
 		nowPage = 1
 	}
-	console.log(category,status)
+	// console.log(category,status)
 	var offset = (nowPage - 1)* size
 	var sql = `select
 		  posts.id as posts_id,
@@ -424,7 +424,7 @@ router.get('/api/changeStatus', function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
@@ -449,7 +449,7 @@ router.get('/api/deletePost', function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
@@ -474,7 +474,7 @@ router.get('/api/insertCategory', function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
@@ -489,7 +489,7 @@ router.get('/api/deleteCategory',function(req, res) {
 		})
 		return
 	}
-	console.log(req.query.id)
+	// console.log(req.query.id)
 	var id = req.query.id || null
 	var sql= `delete from categories where id in (${id})`
 		db.query(sql, function(error, results, fields){
@@ -498,7 +498,7 @@ router.get('/api/deleteCategory',function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
@@ -515,7 +515,7 @@ router.get('/api/updateCategory', function(req, res) {
 	var id = req.query.id || null
 	var name = req.query.name || null
 	var slug = req.query.slug || null
-	console.log(id,name,slug)
+	// console.log(id,name,slug)
 	var sql =`update categories set slug = '${slug}', name = '${name}' where id = ${id}`
 	db.query(sql, function(error, results, fields){
 		if(error){
@@ -523,7 +523,7 @@ router.get('/api/updateCategory', function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
@@ -581,7 +581,7 @@ router.post('/api/insertUser', function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
@@ -594,7 +594,7 @@ router.get('/api/deleteUser',function(req, res) {
 		})
 		return
 	}
-	console.log(req.query.id)
+	// console.log(req.query.id)
 	var id = req.query.id || null
 	var sql= `delete from users where id in (${id})`
 		db.query(sql, function(error, results, fields){
@@ -603,7 +603,7 @@ router.get('/api/deleteUser',function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
@@ -630,14 +630,14 @@ router.post('/api/updateUser', function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 })
 
 //上传文章
 router.post('/api/addPosts', upload.single('feature'),function(req, res) {
-		if(!req.session.user){
+	if(!req.session.user){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -665,17 +665,91 @@ router.post('/api/addPosts', upload.single('feature'),function(req, res) {
 			return
 		}
 		var result = results
-		console.log(result)
+		// console.log(result)
 		res.json(result)
 	})
 
 })
 
-router.get('/api/loginOut',function(req,res){
+router.get('/api/loginOut',function(req, res){
 	 delete req.session.user;
      res.json({
      	code:1,
      	msg:'退出登录'
      })
 })
+
+router.get('/api/getUserInfo', function(req, res){
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+	var user = req.session.user
+	// console.log(user)
+	res.json(user)
+
+})
+//修改登录管理员的个人信息
+router.post('/api/submitAdminInfo', upload.single('avatar'),function(req, res) {
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+	if(req.file){
+		var avatar = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
+	}else{
+		var avatar = req.session.user.avatar
+	}
+		var id = req.session.user.id
+		var slug = req.body.slug
+		var email = req.body.email
+		var nickname = req.body.nickname
+		var bio = req.body.bio
+		// res.json(req.body)
+		// var avatar = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
+		// console.log(feature)
+
+		// res.json({a:req.body,b:req.file})
+		// console.log(req.file)
+		var sql =`update admin set 
+		slug='${slug}',
+		nickname='${nickname}', 
+		bio='${bio}', 
+		email='${email}',
+		avatar='${avatar}' 
+		where id='${id}'`;
+
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		// console.log(result)
+		// console.log(req.session.user)
+
+		var sql2 = `select * from admin where id = ${id}`
+		db.query(sql2, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		req.session.user = result[0]
+		var json = {
+			code: 1,
+			result:result
+		}
+		res.json(json)
+
+	})
+	})
+
+})
+
 module.exports = router

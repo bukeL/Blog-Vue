@@ -92,15 +92,15 @@ export default new Router({
         right:MyNavbar
       }
     },
-    {
-      path: '/admin/addposts',
-      name: 'AddPosts',
-       components: {
-        main: AddPosts,
-        left:MyAside,
-        right:MyNavbar
-      }
-    },
+    // {   管理员登录不写文章,省的麻烦,写的话post文章表需要连admin表和user表两个表,麻烦
+    //   path: '/admin/addposts',
+    //   name: 'AddPosts',
+    //    components: {
+    //     main: AddPosts,
+    //     left:MyAside,
+    //     right:MyNavbar
+    //   }
+    // },
       {
       path: '/admin/category',
       name: 'Category',

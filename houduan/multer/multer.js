@@ -25,7 +25,7 @@ var upload = multer({
 	storage: storage,
 	limits:{
   		files:1, //一次只允许上传一个文件
-        fileSize:5*1024*1024  // 设置文件大小不能超过1MB
+        fileSize:5*1024*1024  // 设置文件大小不能超过5MB
   	},
   	fileFilter:fileFilter
    })

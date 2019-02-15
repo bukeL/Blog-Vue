@@ -42,7 +42,7 @@
     getAllPostsNum(){
       this.$axios.get('getAllPosts')
       .then(res =>{
-        console.log(res.data)
+        // console.log(res.data)
         if(res.data.code == -1){
           // alert('请先登录')
           this.$router.push({name:'AdminLogin'})

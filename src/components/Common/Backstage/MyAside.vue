@@ -14,7 +14,7 @@
         </a>
         <ul  v-show ="isShow">
           <li @click ="allpShow" :class="show==2?active:''"><router-link :to = "{name:'AllPosts'}">所有文章</router-link></li>
-          <li @click ="writeShow" :class="show==3?active:''"><router-link :to = "{name:'AddPosts'}">写文章</router-link></li>
+<!--           <li @click ="writeShow" :class="show==3?active:''"><router-link :to = "{name:'AddPosts'}">写文章</router-link></li> -->
           <li @click ="cateShow" :class="show==4?active:''"><router-link :to = "{name:'Category'}">分类目录</router-link></li>
         </ul>
       </li>
