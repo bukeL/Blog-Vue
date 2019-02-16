@@ -1,7 +1,16 @@
 <template>
 	<div class="header">
-      <a href="" class="btn btn-info " style="width: 90px">登录</a>
-      <a href="" class="btn btn-info " style="width: 90px">注册</a>
+      <div class="myDiv" v-show="showLoginStatus">
+        <img class="avatar" :src="showUseravatar" >
+        <a href="" class="btn mybtn" >个人主页</a>
+        <a href="" class=" btn mybtn">注销</a>
+      </div>
+
+      <div>
+        <router-link :to = "{name:'UserLogin'}" class="btn btn-info " style="width: 91px" v-show="!showLoginStatus">登录</router-link>
+        <router-link href="" :to = "{name:'UserRegister'}" class="btn btn-info " style="width: 94px" v-show="!showLoginStatus">注册</router-link>
+      </div>
+
       <h1 class="logo">
         <router-link :to = "{name:'Home'}"><img src="../../../assets/img/logo.png" alt="">
         </router-link>
@@ -32,7 +41,8 @@ export default {
   data () {
     return {
      categories:[],
-     myValue:''
+     myValue:'',
+     isLogin: false
     }
   },
   methods:{
@@ -53,16 +63,49 @@ export default {
     .catch(err => {
       console.log(err)
     })
+    },
+  },
+  computed:{
+    showUseravatar(){
+       let avatar = window.localStorage.getItem('avatar')
+        if(this.$store.state.avatar=== '/assest/img/default.png' && avatar){
+          this.$store.commit('updateUserAvatar',avatar)//同步操作
+        }
+      return this.$store.getters.getAvatar
+    },
+    showLoginStatus(){
+      let userIsLogin = window.localStorage.getItem('userIsLogin')
+      if(this.$store.state.userIsLogin=== false && userIsLogin){
+          this.$store.commit('updateUserIsLogin',userIsLogin)//同步操作
+        }
+        console.log(this.$store.getters.getuserIsLogin)
+      return this.$store.getters.getuserIsLogin
     }
   },
   created () {
     this.serachAllCategories()
+    // this.changeStatus()
+    // console.log(this.isLogin)
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.myDiv {
+  background:#ff5e52;
+  opacity: .9;
+}
+.mybtn {
+  width: 90px;
+  background:#ff5e52;
+  opacity: .85;
+  color:white;
+}
+.mybtn:hover{
+  opacity: 1;
+  color:black;
+}
 .header {
   width: 190px;
   height: 100%;
@@ -71,7 +114,14 @@ export default {
   top: 0;
   left: 0
 }
-
+ .header .avatar {
+  margin:0 auto;
+  width: 80px;
+  height: 80px;
+  border: 3px solid rgba(255, 255, 255, .3);
+  border-radius: 50%;
+  object-fit: cover;
+}
 .header .logo {
   width: 100%;
   height: 120px;

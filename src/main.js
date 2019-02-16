@@ -13,11 +13,12 @@ Vue.prototype.$axios = Axios
 
 //使用vuex
 Vue.use(Vuex)
-let store  =new Vuex.Store({
+let store  = new Vuex.Store({
 	state:{
 		// userId:'',
 		nickname:'',
-		avatar:'/assest/img/default.png',
+		avatar:'/static/img/default.104d373.png',
+		userIsLogin: false
 	},
 	getters:{
 		getNickname(state){
@@ -25,6 +26,9 @@ let store  =new Vuex.Store({
 		},
 		getAvatar(state){
 			return state.avatar
+		},
+		getuserIsLogin(state){
+			return state.userIsLogin
 		}
 		// getUserId(state){
 		// 	return state.userId
@@ -42,6 +46,10 @@ let store  =new Vuex.Store({
 		updateUserAvatar(state,avatar) {
 			state.avatar = avatar
 			window.localStorage.setItem('avatar', state.avatar);
+		},
+		updateUserIsLogin(state,boolean) {
+			state.userIsLogin = Boolean(boolean)
+			window.localStorage.setItem('userIsLogin', state.userIsLogin);
 		},
 	}
 })

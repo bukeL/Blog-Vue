@@ -40,7 +40,7 @@
       this.isExist = false
       this.$axios.post('adminLogin',{param:{'myEmail':this.myEmail,'myPassword':this.myPassword}})
       .then(res => {
-        // console.log(res)
+        console.log(res.data.length)
         if(res.data.length > 0) {
           // console.log(res.data[0])
           // var params = JSON.stringify(res.data[0])

@@ -225,7 +225,7 @@ router.post('/api/adminLogin', function(req, res) {
 		
 		var result = JSON.parse(JSON.stringify(results))
 		// console.log(result[0].id)
-		req.session.user = result[0]
+		req.session.admin = result[0]
 
 		res.json(results)
 	})
@@ -256,8 +256,8 @@ router.post('/api/getAvatar', function(req, res) {
 })
 //获取所有文章数量以及未批准的数量
 router.get('/api/getAllPosts', function(req, res) {
-	// console.log(req.session.user)
-		if(!req.session.user){
+	// console.log(req.session.admin)
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -277,7 +277,7 @@ router.get('/api/getAllPosts', function(req, res) {
 })
 //获取未批准文章的数量
 router.get('/api/getDraftedNum', function(req, res) {
-	if(!req.session.user){
+	if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -298,7 +298,7 @@ router.get('/api/getDraftedNum', function(req, res) {
 
 //查询所有文章,
 router.get('/api/myAllPosts', function (req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -344,7 +344,7 @@ router.get('/api/myAllPosts', function (req, res) {
 	})
 })
 router.get('/api/specialpost',function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -408,7 +408,7 @@ router.get('/api/specialpost',function(req, res) {
 
 //允许文章发布的api, 点击更改文章状态
 router.get('/api/changeStatus', function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -432,7 +432,7 @@ router.get('/api/changeStatus', function(req, res) {
 //通过id删除一片文章
 
 router.get('/api/deletePost', function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -456,7 +456,7 @@ router.get('/api/deletePost', function(req, res) {
 
 //增加分类列表
 router.get('/api/insertCategory', function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -482,7 +482,7 @@ router.get('/api/insertCategory', function(req, res) {
 
 // 通过id删除分类deleteCategory
 router.get('/api/deleteCategory',function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -505,7 +505,7 @@ router.get('/api/deleteCategory',function(req, res) {
 
 //修改目录名称 
 router.get('/api/updateCategory', function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -530,7 +530,7 @@ router.get('/api/updateCategory', function(req, res) {
 
 //查询所有用户findAllUSers
 router.get('/api/findAllUsers', function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -555,7 +555,7 @@ router.get('/api/findAllUsers', function(req, res) {
 
 //添加一个用户
 router.post('/api/insertUser', function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -587,7 +587,7 @@ router.post('/api/insertUser', function(req, res) {
 })
 //删除一个用户
 router.get('/api/deleteUser',function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -610,7 +610,7 @@ router.get('/api/deleteUser',function(req, res) {
 
 //更新用户信息updateUser
 router.post('/api/updateUser', function(req, res) {
-		if(!req.session.user){
+		if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -637,14 +637,14 @@ router.post('/api/updateUser', function(req, res) {
 
 //上传文章
 router.post('/api/addPosts', upload.single('feature'),function(req, res) {
-	if(!req.session.user){
+	if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
 		})
 		return
 	}
-		var id = req.session.user.id
+		var id = req.session.admin.id
 		// res.json(req.body)
 		var title = req.body.title
 		var content = req.body.content
@@ -672,7 +672,7 @@ router.post('/api/addPosts', upload.single('feature'),function(req, res) {
 })
 
 router.get('/api/loginOut',function(req, res){
-	 delete req.session.user;
+	 delete req.session.admin;
      res.json({
      	code:1,
      	msg:'退出登录'
@@ -680,21 +680,21 @@ router.get('/api/loginOut',function(req, res){
 })
 
 router.get('/api/getUserInfo', function(req, res){
-	if(!req.session.user){
+	if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
 		})
 		return
 	}
-	var user = req.session.user
+	var user = req.session.admin
 	// console.log(user)
 	res.json(user)
 
 })
 //修改登录管理员的个人信息
 router.post('/api/submitAdminInfo', upload.single('avatar'),function(req, res) {
-	if(!req.session.user){
+	if(!req.session.admin){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -704,9 +704,9 @@ router.post('/api/submitAdminInfo', upload.single('avatar'),function(req, res) {
 	if(req.file){
 		var avatar = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
 	}else{
-		var avatar = req.session.user.avatar
+		var avatar = req.session.admin.avatar
 	}
-		var id = req.session.user.id
+		var id = req.session.admin.id
 		var slug = req.body.slug
 		var email = req.body.email
 		var nickname = req.body.nickname
@@ -731,7 +731,7 @@ router.post('/api/submitAdminInfo', upload.single('avatar'),function(req, res) {
 			return
 		}
 		// console.log(result)
-		// console.log(req.session.user)
+		// console.log(req.session.admin)
 
 		var sql2 = `select * from admin where id = ${id}`
 		db.query(sql2, function(error, results, fields){
@@ -740,7 +740,7 @@ router.post('/api/submitAdminInfo', upload.single('avatar'),function(req, res) {
 			return
 		}
 		var result = results
-		req.session.user = result[0]
+		req.session.admin = result[0]
 		var json = {
 			code: 1,
 			result:result
@@ -752,4 +752,78 @@ router.post('/api/submitAdminInfo', upload.single('avatar'),function(req, res) {
 
 })
 
+//用户登录
+router.post('/api/userLogin', function(req, res) {
+	//一个邮箱的正则表达式,,,防止SQL注入
+	var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
+	var email = req.body.param.myEmail
+	var password = req.body.param.myPassword
+	// console.log(password)
+	if (emailFormat.test(email)) {
+		var sql = `select * from users where email = '${email}' and password = '${password}'`
+		db.query(sql, function(error, results, fields){
+			if(error){
+				console.log(error)
+				return
+			}
+			// console.log(results.id)
+			// var result = JSON.parse(results)
+			
+			var result = JSON.parse(JSON.stringify(results))
+			// console.log(result[0].id)
+			req.session.user = result[0]
+
+			res.json(results)
+	})
+	} else{
+		// console.log(4)
+		res.json({isOK:false})
+	}
+	
+	// res.status(200).json({isOk:false})
+})
+
+//用户注册接口
+router.post('/api/userRegister', function(req, res) {
+	//一个邮箱的正则表达式,,,防止SQL注入
+	var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
+	var email = req.body.param.myEmail
+	var password = req.body.param.myPassword
+	var	nickname = req.body.param.myNickname
+	// console.log(password)
+	if (emailFormat.test(email)) {
+		var sql = `insert into users(id,email,password,nickname) values (null,'${email}','${password}','${nickname}')`
+		db.query(sql, function(error, results, fields){
+			if(error){
+				console.log(error)
+				return
+			}
+			var sql =`select * from users where email='${email}'`
+			db.query(sql, function(error, results, fields){
+				if(error){
+					console.log(error)
+					return
+				}
+				// console.log(results.id)
+				// var result = JSON.parse(results)
+				
+				var result = JSON.parse(JSON.stringify(results))
+				// console.log(result[0].id) 
+				req.session.user = result[0]
+
+				res.json({
+					code:1, 
+					results})
+		})
+
+	})
+	} else{
+		// console.log(4)
+		res.json({
+			code:-1,
+			isOK:false})
+	}
+	
+	// res.status(200).json({isOk:false})
+})
 module.exports = router

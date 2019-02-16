@@ -15,6 +15,8 @@ import Router from 'vue-router'
 // import MyAside from '@/components/Common/Backstage/MyAside'
 // import MyNavbar from '@/components/Common/Backstage/MyNavbar'
 // import Personal from '@/components/Admin/Personal/AdminPersonal'
+// import UserLogin from '@/components/User/UserLogin/userLogin'
+// import UserRegister from '@/components/User/UserRegister/userRegister'
 const Home = () => import ('@/components/Home/Home')
 const List = () => import ('@/components/List/List')
 const Detail = () => import ('@/components/Detail/Detail')
@@ -29,6 +31,8 @@ const AdminUser = () => import ('@/components/Admin/User/AdminUser')
 const MyAside = () => import ('@/components/Common/Backstage/MyAside')
 const MyNavbar = () => import ('@/components/Common/Backstage/MyNavbar')
 const Personal = () => import ('@/components/Admin/Personal/AdminPersonal')
+const UserLogin = () => import ('@/components/User/UserLogin/userLogin')
+const UserRegister = () => import ('@/components/User/UserRegister/userRegister')
 Vue.use(Router)  //注册全局路由 $router 和$route
 //将所有组件挂载
 
@@ -126,6 +130,20 @@ export default new Router({
         main: Personal,
         left:MyAside,
         right:MyNavbar
+      }
+    },
+    {
+      path: '/User/login',
+      name: 'UserLogin',
+       components: {
+        main: UserLogin,
+      }
+    },
+    {
+      path: '/User/register',
+      name: 'UserRegister',
+       components: {
+        main: UserRegister,
       }
     },
   ]

@@ -7,7 +7,7 @@
         <br/>
         <br/>
         <p>LYH  李永华 bukeL</p>
-        <p><router-link class="btn btn-primary btn-lg" :to ="{name:'AddPosts'}" role="button">写文章</router-link></p>
+        <!-- <p><router-link class="btn btn-primary btn-lg" :to ="{name:'AddPosts'}" role="button">写文章</router-link></p> -->
       </div>
       <div class="row">
         <div class="col-md-4">
