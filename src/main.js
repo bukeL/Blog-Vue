@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Axios from 'axios'
 import Vuex from 'vuex'
+  import myImg from '@/assets/img/default.png'
 //配置公共的url
 Axios.defaults.baseURL = 'http://127.0.0.1:3000/api/'
 //配置axios
@@ -17,7 +18,7 @@ let store  = new Vuex.Store({
 	state:{
 		// userId:'',
 		nickname:'',
-		avatar:'/static/img/default.104d373.png',
+		avatar:myImg,
 		userIsLogin: false
 	},
 	getters:{

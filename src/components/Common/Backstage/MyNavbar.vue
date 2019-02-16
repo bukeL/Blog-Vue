@@ -24,8 +24,8 @@
         if(res.data.code = 1){
           this.$router.push({name:'AdminLogin'})
           // this.$store.commit('updateUserId','')
-          this.$store.commit('updateUserNickname','')
-          this.$store.commit('updateUserAvatar','/assest/img/default.png')
+          window.localStorage.removeItem('nickname')
+          window.localStorage.removeItem('avatar')
         }
       })
       .catch(err => console.log(err))
