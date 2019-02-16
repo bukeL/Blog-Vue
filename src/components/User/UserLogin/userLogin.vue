@@ -1,10 +1,12 @@
 <template>
   <div class="main">
     <div class="header">
-      <a href="/">
-        <img src="" alt="">
-      </a>
-      <h1>用户登录</h1>
+          <div class="box">
+            <div><img src="../../../assets/img/3.png" style="width: 70px;height: 70px"></div>
+            <div><span class="p1">LYH</span><span>DE</span></div>
+            <div class="p2"><span style="color: blue">轻</span><span  style="color: green">博</span><span  style="color: purple">客</span></div>
+          </div>
+      <h1 style="color: #ff5e52">用户登录</h1>
     </div>
     <form id="login_form" :class="isExist?'shake animated login-wrap':'login-wrap'">
       <div class="alert alert-danger" v-if = "isExist">
@@ -59,7 +61,7 @@ export default {
           // this.$store.commit("updateUserId",userID)
           this.$store.commit("updateUserNickname",Nickname)
           this.$store.commit("updateUserAvatar",avatar)
-          this.$store.commit("updateUserIsLogin",true)
+          this.$store.commit("updateUserIsLogin",'true')
           this.$router.push({name:'Home'}) //输入正确的用户名密码,跳到主页去
           // EventBus.$emit('sendAvatar',this.img)
           // alert('123')
@@ -82,7 +84,31 @@ export default {
 body {
   background-color: #f9f9f9;
 }
+.box{
+      width: 190px;
+      height: 120px;
+      /*background-color: #ff5e52;*/
+      opacity: .9
+    }
+    .box img {
+      margin-top: 20px;
+      float: left;
+    }
+    .box .p1{
+      display: block;
+      font-size: 26px;
+      color: red;
+      padding-top: 30px;
+      padding-right: 50px
+    }
 
+    .box .p2{
+      /*padding-top: 30px;*/
+      padding-left: 120px
+    }
+    .box .p2 span {
+      font-size: 14px
+    }
 .main {
   width: 340px;
   margin: 0 auto;
@@ -104,6 +130,7 @@ body {
   border: 1px solid #d8dee2;
   border-radius: 5px;
   background-color: #fff;
+  margin-top: 10px
 }
 
 .main .message {

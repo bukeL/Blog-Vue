@@ -2,8 +2,8 @@
 	<div class="header">
       <div class="myDiv" v-show="showLoginStatus">
         <img class="avatar" :src="showUseravatar" >
-        <a href="" class="btn mybtn" >个人主页</a>
-        <a href="" class=" btn mybtn">注销</a>
+        <a href="#" class="btn mybtn" >个人主页</a>
+        <button href="" class=" btn mybtn" @click="logout">注销</button>
       </div>
 
       <div>
@@ -64,6 +64,29 @@ export default {
       console.log(err)
     })
     },
+    logout(){
+      this.$axios.get('userLogout')
+      .then(res => {
+        if(res.data.code = 1){
+          
+          // this.$store.commit('updateUserId','')
+          window.localStorage.removeItem('nickname')
+          window.localStorage.removeItem('avatar')
+            
+          // window.localStorage.setItem('userIsLogin', false);
+          window.localStorage.removeItem('userIsLogin') 
+           // this.$store.commit("updateUserIsLogin",false)
+          // this.$store.commit("updateUserIsLogin",false)
+           // this.$store.commit("updateUserIsLogin",false)
+          // this.showLoginStatus()
+          // alert(this.$store.getters.getuserIsLogin)
+          this.$router.go(0)
+        }
+          // this.$store.commit('updateUserId','')
+
+      })
+      .catch(err => console.log(err))
+    }
   },
   computed:{
     showUseravatar(){
@@ -75,12 +98,20 @@ export default {
     },
     showLoginStatus(){
       let userIsLogin = window.localStorage.getItem('userIsLogin')
-      if(this.$store.state.userIsLogin=== false && userIsLogin){
-          this.$store.commit('updateUserIsLogin',userIsLogin)//同步操作
+      // alert(typeof userIsLogin)
+      if(userIsLogin == 'true'){
+          this.$store.commit('updateUserIsLogin',userIsLogin)//同步操作 ,,必须存在
+        }else{
+          this.$store.commit('updateUserIsLogin','false')
         }
-        console.log(this.$store.getters.getuserIsLogin)
-      return this.$store.getters.getuserIsLogin
-    }
+        // console.log(this.$store.getters.getuserIsLogin)
+        // alert(this.$store.getters.getuserIsLogin)
+        if(this.$store.getters.getuserIsLogin == 'false'){
+          return 0
+        }else{
+          return 1
+        }
+    },
   },
   created () {
     this.serachAllCategories()

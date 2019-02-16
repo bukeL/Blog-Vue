@@ -1,10 +1,12 @@
 <template>
   <div class="main">
     <div class="header">
-      <a href="/">
-        <img src="" alt="">
-      </a>
-      <h1>用户注册</h1>
+          <div class="box">
+            <div><img src="../../../assets/img/3.png" style="width: 70px;height: 70px"></div>
+            <div><span class="p1">LYH</span><span>DE</span></div>
+            <div class="p2"><span style="color: blue">轻</span><span  style="color: green">博</span><span  style="color: purple">客</span></div>
+          </div>
+      <h1 style="color: #ff5e52">用户注册</h1>
     </div>
     <!-- 
       表单具有默认的提交行为，默认是同步的，同步表单提交，浏览器会锁死（转圈儿）等待服务端的响应结果。
@@ -60,7 +62,7 @@ export default {
         var avatar = myImg
         this.$store.commit("updateUserNickname",this.myNickname)
         this.$store.commit("updateUserAvatar",avatar)
-        this.$store.commit("updateUserIsLogin",true)
+        this.$store.commit("updateUserIsLogin",'true')
         this.$router.push({name:'Home'})
                     // this.page = page + 1
                     }
@@ -80,7 +82,31 @@ export default {
 body {
   background-color: #f9f9f9;
 }
+    .box{
+      width: 190px;
+      height: 120px;
+      /*background-color: #ff5e52;*/
+      opacity: .9
+    }
+    .box img {
+      margin-top: 20px;
+      float: left;
+    }
+    .box .p1{
+      display: block;
+      font-size: 26px;
+      color: red;
+      padding-top: 30px;
+      padding-right: 50px
+    }
 
+    .box .p2{
+      /*padding-top: 30px;*/
+      padding-left: 120px
+    }
+    .box .p2 span {
+      font-size: 14px
+    }
 .main {
   width: 340px;
   margin: 0 auto;
@@ -102,6 +128,7 @@ body {
   border: 1px solid #d8dee2;
   border-radius: 5px;
   background-color: #fff;
+  margin-top: 10px
 }
 
 .main .message {

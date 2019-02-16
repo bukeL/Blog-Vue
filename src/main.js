@@ -19,7 +19,7 @@ let store  = new Vuex.Store({
 		// userId:'',
 		nickname:'',
 		avatar:myImg,
-		userIsLogin: false
+		userIsLogin: 'false'
 	},
 	getters:{
 		getNickname(state){
@@ -48,8 +48,9 @@ let store  = new Vuex.Store({
 			state.avatar = avatar
 			window.localStorage.setItem('avatar', state.avatar);
 		},
-		updateUserIsLogin(state,boolean) {
-			state.userIsLogin = Boolean(boolean)
+		updateUserIsLogin(state,str) {
+			state.userIsLogin = str
+			// alert(state.userIsLogin)
 			window.localStorage.setItem('userIsLogin', state.userIsLogin);
 		},
 	}

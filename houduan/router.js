@@ -670,7 +670,7 @@ router.post('/api/addPosts', upload.single('feature'),function(req, res) {
 	})
 
 })
-
+//管理员注销
 router.get('/api/loginOut',function(req, res){
 	 delete req.session.admin;
      res.json({
@@ -678,7 +678,7 @@ router.get('/api/loginOut',function(req, res){
      	msg:'退出登录'
      })
 })
-
+//获取当前登录的管理员信息
 router.get('/api/getUserInfo', function(req, res){
 	if(!req.session.admin){
 		res.send({
@@ -792,7 +792,7 @@ router.post('/api/userRegister', function(req, res) {
 	var	nickname = req.body.param.myNickname
 	// console.log(password)
 	if (emailFormat.test(email)) {
-		var sql = `insert into users(id,email,password,nickname) values (null,'${email}','${password}','${nickname}')`
+		var sql = `insert into users(id,email,password,nickname,avatar) values (null,'${email}','${password}','${nickname}','/static/img/default.104d373.png')`
 		db.query(sql, function(error, results, fields){
 			if(error){
 				console.log(error)
@@ -825,5 +825,14 @@ router.post('/api/userRegister', function(req, res) {
 	}
 	
 	// res.status(200).json({isOk:false})
+})
+
+//用户注销
+router.get('/api/userLogout',function(req, res){
+	 delete req.session.user;
+     res.json({
+     	code:1,
+     	msg:'退出登录'
+     })
 })
 module.exports = router
