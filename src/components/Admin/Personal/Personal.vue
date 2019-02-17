@@ -13,8 +13,9 @@
         <div class="form-group">
           <label class="col-sm-3 control-label">头像</label>
           <div class="col-sm-3">
+
             <label class="form-image">
-              原头像:
+              <p style="background-color: #eee;opacity: 0.9">原头像:</p>
               <img :src="myImg">
               <i class="mask fa fa-upload"></i>
             </label>
@@ -77,8 +78,8 @@
     }
   },
   methods:{
-    getUserInfo(){
-      this.$axios.get('getUserInfo')
+    getAdminInfo(){
+      this.$axios.get('getAdminInfo')
       .then(res => {
         if(res.data.code == -1){
           // alert('请先登录')
@@ -130,7 +131,7 @@
         },
   },
   created(){
-    this.getUserInfo();
+    this.getAdminInfo();
     // this.submitAdminInfo()
   },
     beforeRouteUpdate(to, from, next){

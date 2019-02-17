@@ -160,7 +160,7 @@ export default {
   /*margin: 0 auto;*/
 }
 .box{
-  margin-top: 20px 
+  margin-top: 25px 
 }
 .header {
   width: 190px;

@@ -65,6 +65,8 @@ export default {
         this.$store.commit("updateUserIsLogin",'true')
         this.$router.push({name:'Home'})
                     // this.page = page + 1
+                    } else{
+                      alert('注册失败,请完整输入,并请输入正确的邮箱格式')
                     }
       })
       .catch(err => console.log(err))

@@ -14,7 +14,7 @@
           <label class="col-sm-3 control-label">头像</label>
           <div class="col-sm-3">
             <label class="form-image">
-              原头像:
+              <p style="background-color: #eee;opacity: 0.9">原头像:</p>
               <img :src="myImg">
               <i class="mask fa fa-upload"></i>
             </label>
@@ -52,7 +52,7 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-3 col-sm-6">
-            <button type="button" class="btn btn-primary" @click="submitAdminInfo()">更新</button>
+            <button type="button" class="btn btn-primary" @click="submitUserInfo()">更新</button>
             <a class="btn btn-link" href="password-reset.html">修改密码</a>
           </div>
         </div>
@@ -77,10 +77,62 @@
     }
   },
   methods:{
-
+    getUserInfo(){
+      this.$axios.get('getUserInfo')
+      .then(res => {
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'UserLogin'})
+        }
+         // console.log(res.data)
+         // this.id = res.data.id
+         this.myImg = res.data.avatar
+         this.myEmail = res.data.email
+         this.mySlug = res.data.slug
+         this.myNickname = res.data.nickname
+         this.myBio = res.data.bio
+      })
+      .catch(err => console.log(err))
+    },
+    changeFile: function (e) {
+          //console.log(e.target.files[0])
+          this.myAvatar = e.target.files[0]
+        },
+    submitUserInfo(){
+      // alert(1)
+      var fd = new FormData()
+      fd.append('avatar', this.myAvatar)
+      fd.append('email', this.myEmail)
+      fd.append('slug', this.mySlug)
+      fd.append('nickname', this.myNickname)
+      fd.append('bio', this.myBio)
+      this.$axios.post('submitUserInfo',fd,{
+        headers: { "content-type": "multipart/form-data" }
+      })
+      .then(res => {
+        // console.log(res.data)
+        if(res.data.code == -1){
+          // alert('请先登录')
+          this.$router.push({name:'AdminLogin'})
+        }
+        if(res.data.code == 1){
+          // console.log(this.myCatgory,this.myStatus,this.page)
+        alert('修改个人信息成功')
+        this.$store.commit("updateUserNickname",res.data.result[0].nickname)
+        this.$store.commit("updateUserAvatar",res.data.result[0].avatar)
+       this.$router.push({name:'UserHome'})
+                    // this.page = page + 1
+                    }
+      })
+      .catch(err => {
+        alert('修改失败')
+        console.log(err)
+      })
+    },
   },
   created(){
     // this.submitAdminInfo()
+    this.getUserInfo()
   },
     beforeRouteUpdate(to, from, next){
      

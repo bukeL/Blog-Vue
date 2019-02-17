@@ -5,7 +5,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><router-link :to = "{name:'Home'}"><i class="fa fa-user"></i>回首页瞅瞅</router-link></li>
         <li><router-link :to = "{name:'UserPersonal'}"><i class="fa fa-user"></i>个人中心</router-link></li>
-        <li><a @click="logout"><i class="fa fa-user"></i>退出</a></li>
+        <li><a @click="logout"><i class="fa fa-user"></i>注销</a></li>
       </ul>
     </nav>
 </div>

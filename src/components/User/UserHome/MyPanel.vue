@@ -2,11 +2,11 @@
   <div class="main">
     <div class="container-fluid">
       <div class="jumbotron text-center">
-        <h2>博客</h2>
+        <h2>博客管理</h2>
         <br/>
         <br/>
         <br/>
-        <p>LYH  李永华 bukeL</p>
+        <p>昵称:{{showNcikname}}</p>
         <!-- <p><router-link class="btn btn-primary btn-lg" :to ="{name:'AddPosts'}" role="button">写文章</router-link></p> -->
       </div>
       <div class="row">
@@ -16,7 +16,7 @@
               <h3 class="panel-title">个人博文统计：</h3>
             </div>
             <ul class="list-group">
-              <li class="list-group-item"><strong></strong>篇文章（<strong></strong>篇待审核 )</li>
+              <li class="list-group-item"><strong>{{allPostNum}}</strong>篇文章（<strong>{{DraftedNum}}</strong>篇待审核 )</li>
               <!-- <li class="list-group-item"><strong></strong>个分类</li> -->
             </ul>
           </div>
@@ -33,13 +33,44 @@
   name: 'my-panel',
   data () {
     return {
-
+      allPostNum:0,
+      DraftedNum:0,
     }
   },
   methods:{
-
+    getUserPost(){
+      this.$axios.get('getUserPost')
+      .then(res => {
+        if(res.data.code == -1){
+          alert('请先登录')
+          this.$router.push({name:'UserLogin'})
+        }
+        console.log( res.data)
+        this.allPostNum = res.data[0].num
+      })
+      .catch(err => console.log(err))
+    },
+    getUserDraftedNum(){
+      this.$axios.get('getUserDraftedNum')
+      .then(res => {
+        console.log( res.data)
+        this.DraftedNum = res.data[0].num
+      })
+      .catch(err => console.log(err))
+    }
   },
   created(){
+    this.getUserPost()
+    this.getUserDraftedNum()
+  },
+    computed:{
+    showNcikname(){
+       let nickname = window.localStorage.getItem('nickname')
+        if(nickname){
+          this.$store.commit('updateUserNickname',nickname)//同步操作
+        }
+      return this.$store.getters.getNickname
+    }
   },
     beforeRouteUpdate(to, from, next){
   }

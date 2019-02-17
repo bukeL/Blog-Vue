@@ -4,7 +4,7 @@
       <button class="btn btn-default navbar-btn fa fa-bars"></button>
       <ul class="nav navbar-nav navbar-right">
         <li><router-link :to = "{name:'Personal'}"><i class="fa fa-user"></i>个人中心</router-link></li>
-        <li><a @click="loginOut"><i class="fa fa-user"></i>退出</a></li>
+        <li><a @click="loginOut"><i class="fa fa-user"></i>注销</a></li>
       </ul>
     </nav>
 </div>

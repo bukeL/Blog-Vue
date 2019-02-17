@@ -352,6 +352,7 @@ router.get('/api/myAllPosts', function (req, res) {
 		res.json(result)
 	})
 })
+//通过分类和状态查询文章
 router.get('/api/specialpost',function(req, res) {
 		if(!req.session.admin){
 		res.send({
@@ -653,7 +654,7 @@ router.get('/api/loginOut',function(req, res){
      })
 })
 //获取当前登录的管理员信息
-router.get('/api/getUserInfo', function(req, res){
+router.get('/api/getAdminInfo', function(req, res){
 	if(!req.session.admin){
 		res.send({
 			code: -1,
@@ -720,7 +721,6 @@ router.post('/api/submitAdminInfo', upload.single('avatar'),function(req, res) {
 			result:result
 		}
 		res.json(json)
-
 	})
 	})
 
@@ -764,6 +764,12 @@ router.post('/api/userRegister', function(req, res) {
 	var email = req.body.param.myEmail
 	var password = req.body.param.myPassword
 	var	nickname = req.body.param.myNickname
+		if(!email || !password || !nickname){
+		res.json({
+			code:-1,
+			isOK:false})	
+		return
+	}
 	// console.log(password)
 	if (emailFormat.test(email)) {
 		var sql = `insert into users(id,email,password,nickname,avatar) values (null,'${email}','${password}','${nickname}','/static/img/default.104d373.png')`
@@ -842,6 +848,127 @@ router.post('/api/addPosts', upload.single('feature'),function(req, res) {
 		var result = results
 		// console.log(result)
 		res.json(result)
+	})
+
+})
+
+//查询当前用户写的所有文章数和未批准文章数getUserPost
+router.get('/api/getUserPost', function(req, res) {
+	// console.log(req.session.admin)
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+	var user_id = req.session.user.id
+ var sql = `select count(1) as num from posts where user_id ='${user_id}'`
+ db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		// console.log(1）
+		// console.log(results)
+		res.json(results)
+	})
+})
+
+//获取未批准的文章数目
+router.get('/api/getUserDraftedNum', function(req, res) {
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+	var user_id = req.session.user.id
+ var sql = `select count(1) as num from posts where status="未批准"&&user_id='${user_id}'`
+ db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		// console.log(1）
+		// console.log(results)
+		res.json(results)
+	})
+})
+
+//获取当前登录的用户信息
+router.get('/api/getUSerInfo', function(req, res){
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+	var user = req.session.user
+	// console.log(user)
+	res.json(user)
+
+})
+
+//修改当前登录用户的用户个人信息
+//修改登录管理员的个人信息
+router.post('/api/submitUserInfo', upload.single('avatar'),function(req, res) {
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+	if(req.file){
+		var avatar = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
+	}else{
+		var avatar = req.session.user.avatar
+	}
+		var id = req.session.user.id
+		var slug = req.body.slug
+		var email = req.body.email
+		var nickname = req.body.nickname
+		var bio = req.body.bio
+		// res.json(req.body)
+		// var avatar = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
+		// console.log(feature)
+
+		// res.json({a:req.body,b:req.file})
+		// console.log(req.file)
+		var sql =`update users set 
+		slug='${slug}',
+		nickname='${nickname}', 
+		bio='${bio}', 
+		email='${email}',
+		avatar='${avatar}' 
+		where id='${id}'`;
+
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		// console.log(result)
+		// console.log(req.session.admin)
+
+		var sql2 = `select * from users where id = ${id}`
+		db.query(sql2, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		req.session.user = result[0]
+		var json = {
+			code: 1,
+			result:result
+		}
+		res.json(json)
+
+	})
 	})
 
 })
