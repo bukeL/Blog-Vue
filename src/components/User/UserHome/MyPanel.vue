@@ -13,11 +13,11 @@
         <div class="col-md-4">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">站点内容统计：</h3>
+              <h3 class="panel-title">个人博文统计：</h3>
             </div>
             <ul class="list-group">
               <li class="list-group-item"><strong></strong>篇文章（<strong></strong>篇待审核 )</li>
-              <li class="list-group-item"><strong></strong>个分类</li>
+              <!-- <li class="list-group-item"><strong></strong>个分类</li> -->
             </ul>
           </div>
         </div>

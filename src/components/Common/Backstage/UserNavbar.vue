@@ -3,6 +3,7 @@
   <nav class="navbar">
       <button class="btn btn-default navbar-btn fa fa-bars"></button>
       <ul class="nav navbar-nav navbar-right">
+        <li><router-link :to = "{name:'Home'}"><i class="fa fa-user"></i>回首页瞅瞅</router-link></li>
         <li><router-link :to = "{name:'UserPersonal'}"><i class="fa fa-user"></i>个人中心</router-link></li>
         <li><a @click="logout"><i class="fa fa-user"></i>退出</a></li>
       </ul>

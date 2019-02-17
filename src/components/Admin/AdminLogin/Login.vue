@@ -66,15 +66,19 @@
       // console.log('出发了')
       this.isFadeIn = false
       var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
-      if (!emailFormat.test(this.myEmail)) return
+      if (!emailFormat.test(this.myEmail)){
+        this.img = myImg
+        return
+      } 
       this.$axios.post('getAvatar',{param:{'myEmail':this.myEmail}})
     .then(res => {
-      // console.log(res)
-      if(res.data.length > 0) {
-        this.img = res.data[0].avatar
+      console.log(res.data)
+      if(res.data.results.length ==1) {
+        this.img = res.data.results[0].avatar
         this.isFadeIn = true
       } else {
-        this.img =myImg
+        // alert(1)
+        this.img = myImg
       }
     })
     .catch(err => console.log(err))

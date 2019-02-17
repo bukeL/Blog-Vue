@@ -241,6 +241,7 @@ router.post('/api/adminLogin', function(req, res) {
 router.post('/api/getAvatar', function(req, res) {
 	var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
 	var email = req.body.param.myEmail
+	console.log(emailFormat.test(email))
 	if (emailFormat.test(email)) {
 		var sql = `select avatar from admin where email = '${email}'`
 		db.query(sql, function(error, results, fields){
@@ -250,9 +251,17 @@ router.post('/api/getAvatar', function(req, res) {
 		}
 		// console.log(1）
 		// console.log(results)
-		res.status(200).json(results)
+		res.status(200).json({
+			code:1,
+			results})
+		res.end()
 	})
-	}
+	}else{
+		res.status(200).json({
+			code:-1,
+			msg:'has not avatar'})
+		res.end()
+		}
 })
 //获取所有文章数量以及未批准的数量
 router.get('/api/getAllPosts', function(req, res) {
@@ -635,41 +644,6 @@ router.post('/api/updateUser', function(req, res) {
 	})
 })
 
-//上传文章
-router.post('/api/addPosts', upload.single('feature'),function(req, res) {
-	if(!req.session.admin){
-		res.send({
-			code: -1,
-			msg:'用户没有登录'
-		})
-		return
-	}
-		var id = req.session.admin.id
-		// res.json(req.body)
-		var title = req.body.title
-		var content = req.body.content
-		var slug = req.body.slug
-		var feature = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
-		var category = req.body.category
-		var created = req.body.created
-		var status = req.body.status
-		// console.log(feature)
-		// console.log(req.file)
-		// res.json({a:req.body,b:req.file})
-		// console.log(req.file)
-		var sql =`insert into posts values 
-		(null, '${slug}', '${title}', '${feature}', '${created}','${content}','0','0','${status}','${id}','${category}');`
-		db.query(sql, function(error, results, fields){
-		if(error){
-			console.log(error)
-			return
-		}
-		var result = results
-		// console.log(result)
-		res.json(result)
-	})
-
-})
 //管理员注销
 router.get('/api/loginOut',function(req, res){
 	 delete req.session.admin;
@@ -834,5 +808,41 @@ router.get('/api/userLogout',function(req, res){
      	code:1,
      	msg:'退出登录'
      })
+})
+
+//用户上传文章
+router.post('/api/addPosts', upload.single('feature'),function(req, res) {
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+		var id = req.session.user.id
+		// res.json(req.body)
+		var title = req.body.title
+		var content = req.body.content
+		var slug = req.body.slug
+		var feature = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
+		var category = req.body.category
+		var created = req.body.created
+		var status = req.body.status
+		// console.log(feature)
+		// console.log(req.file)
+		// res.json({a:req.body,b:req.file})
+		// console.log(req.file)
+		var sql =`insert into posts values 
+		(null, '${slug}', '${title}', '${feature}', '${created}','${content}','0','0','${status}','${id}','${category}');`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
+
 })
 module.exports = router
