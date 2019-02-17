@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="page-title">
         <h1>所有文章</h1>
-        <router-link class="btn btn-primary btn-xs" :to ="{name:'AddPosts'}" role="button">写文章</router-link>
+        <!-- <router-link class="btn btn-primary btn-xs" :to ="{name:'AddPosts'}" role="button">写文章</router-link> -->
       </div>
       <!-- 有错误信息时展示 -->
       <!-- <div class="alert alert-danger">

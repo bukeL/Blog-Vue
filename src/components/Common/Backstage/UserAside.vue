@@ -72,7 +72,7 @@
     },
     showUseravatar(){
        let avatar = window.localStorage.getItem('avatar')
-        if(this.$store.state.avatar=== '/assest/img/default.png' && avatar){
+        if(avatar){
           this.$store.commit('updateUserAvatar',avatar)//同步操作
         }
       return this.$store.getters.getAvatar

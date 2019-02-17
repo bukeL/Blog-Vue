@@ -442,7 +442,7 @@ router.get('/api/changeStatus', function(req, res) {
 //通过id删除一片文章
 
 router.get('/api/deletePost', function(req, res) {
-		if(!req.session.admin){
+		if(!req.session.admin && !req.session.user){
 		res.send({
 			code: -1,
 			msg:'用户没有登录'
@@ -971,5 +971,70 @@ router.post('/api/submitUserInfo', upload.single('avatar'),function(req, res) {
 	})
 	})
 
+})
+//通过分类和状态查询文章 用户
+router.get('/api/userSpecialpost',function(req, res) {
+		if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+	var user_id = req.session.user.id
+	// console.log(req.query)
+	var category = req.query.category || 0
+	var status = req.query.status || 0
+	var nowPage = req.query.page || 1
+	var size = req.query.size || 10
+		if(nowPage < 1){
+		nowPage = 1
+	}
+	// console.log(category,status)
+	var offset = (nowPage - 1)* size
+	var sql = `select
+		  posts.id as posts_id,
+		  categories.id as categories_id,
+		  posts.title,
+		  users.nickname as user_name,
+		  categories.name as category_name,
+		  users.slug as users_slug,
+		  posts.created,
+		  posts.status,
+		  posts.slug,
+		  posts.content,
+		  posts.views,
+		  posts.likes,
+		  posts.feature
+		  from posts
+		  inner join categories on posts.category_id = categories.id
+		  inner join users on posts.user_id = users.id
+		  where user_id=${user_id}
+		  `
+		  if(category==0 && status==0){
+		  	sql += `order by posts.created desc limit ${offset}, ${size};`
+
+		  } else if (category==0 && status!=0) {
+		  	sql += `&&posts.status ='${status}' 
+		  			order by posts.created desc 
+		  			limit ${offset}, ${size};`
+		  } else if (category!=0 && status==0) {
+		  	sql += `&&posts.category_id = ${category}
+		  			order by posts.created desc 
+		 		 	limit ${offset}, ${size}`
+		  } else {
+		  	sql += `&&posts.category_id = ${category} and posts.status ='${status}' 
+		 		 	order by posts.created desc 
+		 		 	limit ${offset}, ${size}`
+		  }
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
 })
 module.exports = router
