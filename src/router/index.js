@@ -38,6 +38,7 @@ const UserNavbar = () => import ('@/components/Common/Backstage/UserNavbar')
 const AddPosts = () => import ('@/components/User/AddPosts/UserAddPosts')
 const UserPersonal = () => import ('@/components/User/UserPersonal/UserPersonal')
 const UserAllPosts = () => import ('@/components/User/UserAllPosts/UserAllPosts')
+const UserEditPost = () => import ('@/components/User/EditPosts/UserEditPosts')
 Vue.use(Router)  //注册全局路由 $router 和$route
 //将所有组件挂载
 
@@ -183,6 +184,15 @@ export default new Router({
       name: 'UserPersonal',
        components: {
         main: UserPersonal,
+        left:UserAside,
+        right:UserNavbar
+      }
+    },
+    {   
+      path: '/User/userEditPost',
+      name: 'UserEditPost',
+       components: {
+        main: UserEditPost,
         left:UserAside,
         right:UserNavbar
       }

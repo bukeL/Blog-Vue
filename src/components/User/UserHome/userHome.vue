@@ -20,7 +20,8 @@
 
   },
   created(){
-  
+    // console.log(this.$route.params)
+    // alert(this.$route.params.id)
   },
     beforeRouteUpdate(to, from, next){
      

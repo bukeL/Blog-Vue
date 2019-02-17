@@ -45,7 +45,7 @@
           alert('请先登录')
           this.$router.push({name:'UserLogin'})
         }
-        console.log( res.data)
+        // console.log( res.data)
         this.allPostNum = res.data[0].num
       })
       .catch(err => console.log(err))
@@ -53,7 +53,7 @@
     getUserDraftedNum(){
       this.$axios.get('getUserDraftedNum')
       .then(res => {
-        console.log( res.data)
+        // console.log( res.data)
         this.DraftedNum = res.data[0].num
       })
       .catch(err => console.log(err))

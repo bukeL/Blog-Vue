@@ -150,6 +150,7 @@ router.get('/api/myPostById', function (req, res) {
 		  posts.id as posts_id,
 		  categories.id as categories_id,
 		  posts.title,
+		  posts.feature as feature,
 		  users.nickname as user_name,
 		  categories.name as category,
 		  posts.created,
@@ -1036,5 +1037,58 @@ router.get('/api/userSpecialpost',function(req, res) {
 		// console.log(result)
 		res.json(result)
 	})
+})
+//用户修改文章
+router.post('/api/editPost', upload.single('feature'),function(req, res) {
+	if(!req.session.user){
+		res.send({
+			code: -1,
+			msg:'用户没有登录'
+		})
+		return
+	}
+		var id = req.session.user.id
+		var post_id = req.body.post_id
+		// res.json(req.body)
+		var title = req.body.title
+		var content = req.body.content
+		var slug = req.body.slug
+		if(req.file){
+			var feature = 'http://localhost:3000/static/uploads' + '/' +  req.file.filename
+		}else{
+			var feature =req.body.oldFeature
+		}
+		console.log(feature)
+		var category = req.body.category
+		// var created = req.body.created
+		// var status = req.body.status
+		// console.log(feature)
+		// console.log(req.file)
+		// res.json({a:req.body,b:req.file})
+		// console.log(req.file)
+		// var sql =`update users set 
+		// 	slug='${slug}',
+		// 	nickname='${nickname}', 
+		// 	bio='${bio}', 
+		// 	email='${email}',
+		// 	avatar='${avatar}' 
+		// 	where id='${id}'`;
+		var sql =`update posts set
+		title = '${title}',
+		content = '${content}',
+		slug = '${slug}',
+		feature = '${feature}',
+		category_id ='${category}'
+		where id = ${post_id}`
+		db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
+
 })
 module.exports = router

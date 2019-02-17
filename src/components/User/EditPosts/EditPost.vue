@@ -2,7 +2,7 @@
   <div class="main">
     <div class="container-fluid">
       <div class="page-title">
-        <h1>写文章</h1>
+        <h1>编辑文章</h1>
       </div>
       <form class="row" id="myForm" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
@@ -31,12 +31,8 @@
             <label for="category">所属分类</label>
             <select id="category" class="form-control" name="category" v-model="formObj.category">
               <!-- <option value="1">未分类</option> -->
-              <option v-for="(category,index) in categories" :key="index" :value="category.id">{{category.name}}</option>
+              <option v-for="(category,index) in categories" :key="index" :value="category.id">{{category.name }}</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label for="created">发布时间</label>
-            <input id="created" class="form-control" name="created" type="datetime-local" v-model="formObj.created">
           </div>
           <div class="form-group">
             <label for="status">状态</label>
@@ -46,7 +42,7 @@
             </select>
           </div>
           <div class="form-group">
-            <a class="btn btn-primary" @click="submitForm">保存</a>
+            <a class="btn btn-primary" @click="submitForm($route.params.id)">保存</a>
           </div>
         </div>
       </form>
@@ -66,14 +62,29 @@
         slug:'',
         feature:{},
         category:'',
-        created:'',
+        // created:'',
         status:'未批准',
+        oldFeature:''
       },
       categories:[]
     }
   },
   methods:{
-    submitForm(){
+    getPost(id){
+      this.$axios.get('myPostById?id='+id)
+      .then(res => {
+        console.log(res.data)
+        this.formObj.title = res.data[0].title
+        this.formObj.content = res.data[0].content
+        this.formObj.slug = res.data[0].slug
+        // this.formObj.feature = res.data[0].feature
+        this.formObj.category = res.data[0].categories_id
+        // this.formObj.created = res.data[0].created
+        this.formObj.oldFeature = res.data[0].feature
+      })
+      .catch(err => console.log(err))
+    },
+    submitForm(post_id){
       // var form = document.getElementById('myForm')
       // var formData = new FormData(form)
       var fd = new FormData()
@@ -82,21 +93,24 @@
       fd.append('slug', this.formObj.slug)
       fd.append('feature', this.formObj.feature)
       fd.append('category', this.formObj.category)
-      fd.append('created', this.formObj.created)
-      fd.append('status', this.formObj.status)
+      // fd.append('created', this.formObj.created)
+      // fd.append('status', this.formObj.status)
+      fd.append('post_id', post_id)
+      fd.append('oldFeature', this.formObj.oldFeature)
+      console.log(this.formObj.oldFeature)
       // var title = formData.get('title')
       // console.log(fd)
-      this.$axios.post('addPosts',fd,{
+      this.$axios.post('editPost',fd,{
         headers: { "content-type": "multipart/form-data" }
       })
       .then(res => {
         if(res.data.code == -1){
           // alert('请先登录')
-          this.$router.push({name:'AdminLogin'})
+          this.$router.push({name:'UserLogin'})
         }
         if(res.data.affectedRows == 1){
           // console.log(this.myCatgory,this.myStatus,this.page)
-        alert('添加文章成功')
+        alert('修改文章成功')
        this.$router.push({name:'UserAllPosts'})
                     // this.page = page + 1
                     }
@@ -123,6 +137,12 @@
     }
   },
   created(){
+    console.log(this.$route.params.id)
+    if(!this.$route.params.id){
+      this.$router.push({name:'UserAllPosts'})
+      return
+    }
+    this.getPost(this.$route.params.id)
     this.serachAllCategories()
   },
   beforeRouteUpdate(to,from,next){

@@ -52,7 +52,7 @@
             <td class="text-center">{{post.created | convertTime('YYYY-MM-DD')}}</td>
             <td class="text-center">{{post.status}}</td>
             <td class="text-center">
-              <a  class="btn btn-default">编辑</a>
+              <router-link :to="{name:'UserEditPost',params:{id:post.posts_id}}" class="btn btn-default" >编辑</router-link>
               <a  class="btn btn-danger btn-xs" @click="deletePost(post.posts_id)">删除</a>
             </td>
           </tr>
