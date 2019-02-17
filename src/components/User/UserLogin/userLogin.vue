@@ -25,7 +25,7 @@
           <input type="checkbox">记住我
         </label>
       </div>
-      <button type="button" class="btn btn-success btn-block" @click="userLogin">登录</button>
+      <button type="button" class="btn mybtn btn-block" @click="userLogin">登录</button>
     </form>
     <div class="message">
       <p>没有账号? <router-link :to = "{name:'UserRegister'}">点击创建</router-link>.</p>
@@ -139,5 +139,17 @@ body {
   border: 1px solid #d8dee2;
   border-radius: 5px;
 }
-
+label{
+    color:#ff5e52;
+}
+.mybtn {
+  /*width: 90px;*/
+  background:#ff5e52;
+  opacity: .85;
+  color:white;
+}
+.mybtn:hover{
+  opacity: 1;
+  color:white;
+}
 </style>

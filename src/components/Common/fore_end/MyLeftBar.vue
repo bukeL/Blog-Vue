@@ -2,13 +2,18 @@
 	<div class="header">
       <div class="myDiv" v-show="showLoginStatus">
         <img class="avatar" :src="showUseravatar" >
-        <a href="#" class="btn mybtn" >个人主页</a>
-        <button href="" class=" btn mybtn" @click="logout">注销</button>
+        <h3 class="span1">{{showNcikname}}</h3>
+        <!-- <span class="span1"></span> -->
+        <div class="box">
+          <router-link :to="{name:'UserHome'}" class="btn mybtn" >个人主页</router-link>
+          <button href="" class=" btn mybtn" @click="logout">注销</button>
+        </div>
+
       </div>
 
       <div>
-        <router-link :to = "{name:'UserLogin'}" class="btn btn-info " style="width: 91px" v-show="!showLoginStatus">登录</router-link>
-        <router-link href="" :to = "{name:'UserRegister'}" class="btn btn-info " style="width: 94px" v-show="!showLoginStatus">注册</router-link>
+        <router-link :to = "{name:'UserLogin'}" class="btn mybtn " style="width: 91px" v-show="!showLoginStatus">登录</router-link>
+        <router-link href="" :to = "{name:'UserRegister'}" class="btn mybtn" style="width: 94px" v-show="!showLoginStatus">注册</router-link>
       </div>
 
       <h1 class="logo">
@@ -96,6 +101,13 @@ export default {
         }
       return this.$store.getters.getAvatar
     },
+    showNcikname(){
+       let nickname = window.localStorage.getItem('nickname')
+        if(nickname){
+          this.$store.commit('updateUserNickname',nickname)//同步操作
+        }
+      return this.$store.getters.getNickname
+    },
     showLoginStatus(){
       let userIsLogin = window.localStorage.getItem('userIsLogin')
       // alert(typeof userIsLogin)
@@ -123,7 +135,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 .myDiv {
+  position: relative;
   background:#ff5e52;
   opacity: .9;
 }
@@ -132,10 +146,21 @@ export default {
   background:#ff5e52;
   opacity: .85;
   color:white;
+  border:none;
 }
 .mybtn:hover{
   opacity: 1;
-  color:black;
+  color:#666;
+}
+.span1{
+  color: white;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  /*margin: 0 auto;*/
+}
+.box{
+  margin-top: 20px 
 }
 .header {
   width: 190px;

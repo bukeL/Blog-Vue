@@ -41,8 +41,8 @@
           <div class="form-group">
             <label for="status">状态</label>
             <select id="status" class="form-control" name="status" v-model="formObj.status">
-              <option value="未批准">未批准</option>
-              <option value="已发布">已发布</option>
+              <option value="未批准" selected>未批准</option>
+              <!-- <option value="已发布">已发布</option> -->
             </select>
           </div>
           <div class="form-group">
@@ -97,7 +97,7 @@
         if(res.data.affectedRows == 1){
           // console.log(this.myCatgory,this.myStatus,this.page)
         alert('添加文章成功')
-       this.$router.push({name:'AllPosts'})
+       this.$router.push({name:'UserAllPosts'})
                     // this.page = page + 1
                     }
       })
@@ -112,12 +112,8 @@
     serachAllCategories(){
       this.$axios.get('allCategories')
       .then(res => {
-        if(res.data.code == -1){
-          // alert('请先登录')
-          this.$router.push({name:'AdminLogin'})
-        }
         this.categories =res.data
-        console.log(res.data)
+        // console.log(res.data)
         // console.log(this.categories)
       })
       .catch(err => {

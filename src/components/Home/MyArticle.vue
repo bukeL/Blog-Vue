@@ -11,7 +11,6 @@
             <p class="brief">{{post.content}}</p>
             <p class="extra">
               <span class="reading">阅读({{post.views}})</span>
-              <span class="comment">评论(0)</span>
               <a href="javascript:;" class="like">
                 <i class="fa fa-thumbs-up"></i>
                 <span>赞({{post.likes}})</span>

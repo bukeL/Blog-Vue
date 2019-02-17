@@ -27,7 +27,7 @@
         <label for="password">密码</label>
         <input type="password" v-model="myPassword" class="form-control" id="password" name="password" placeholder="Password">
       </div>
-      <button type="button" class="btn btn-success btn-block" @click="userRegister">注册</button>
+      <button type="button" class="btn mybtn btn-block" @click="userRegister">注册</button>
     </form>
     <div class="message">
       <p>已有账号? <router-link :to="{name:'UserLogin'}">点击登录</router-link>.</p>
@@ -81,6 +81,9 @@ export default {
 <style scoped>
 body {
   background-color: #f9f9f9;
+}
+label{
+    color:#ff5e52;
 }
     .box{
       width: 190px;
@@ -137,5 +140,14 @@ body {
   border: 1px solid #d8dee2;
   border-radius: 5px;
 }
-
+.mybtn {
+  /*width: 90px;*/
+  background:#ff5e52;
+  opacity: .85;
+  color:white;
+}
+.mybtn:hover{
+  opacity: 1;
+  color:white;
+}
 </style>

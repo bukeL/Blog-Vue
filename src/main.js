@@ -72,8 +72,8 @@ import MyRightBar from './components/Common/fore_end/MyRightBar.vue'
 // import MyCarousel from './components/Home/MyCarousel.vue'
 // import MyRank from './components/Home/MyRank.vue'
 import MyHot from './components/Common/fore_end/MyHot.vue'
-import MyNavbar from './components/Common/Backstage/MyNavbar.vue'
-import MyAside from './components/Common/Backstage/MyAside.vue'
+import AdminNavbar from './components/Common/Backstage/AdminNavbar.vue'
+import AdminAside from './components/Common/Backstage/AdminAside.vue'
 // import MyPostAdd from './components/Admin/AddPosts/AddPost.vue'
 // import MyArticle from './components/Home/MyArticle.vue'
 // import MyDetail from './components/Common/MyDetail.vue'
@@ -92,8 +92,8 @@ Vue.component(MyRightBar.name,MyRightBar)
 // Vue.component(MyRank.name,MyRank)
 Vue.component(MyHot.name,MyHot)
 
-Vue.component(MyNavbar.name,MyNavbar)
-Vue.component(MyAside.name,MyAside)
+Vue.component(AdminNavbar.name,AdminNavbar)
+Vue.component(AdminAside.name,AdminAside)
 // Vue.component(MyPostAdd.name,MyPostAdd)
 // Vue.component(MyArticle.name,MyArticle)
 // Vue.component(MyDetail.name,MyDetail)

@@ -12,8 +12,8 @@ import Router from 'vue-router'
 // import AddPosts from '@/components/Admin/AddPosts/AdminAddPosts'
 // import Category from '@/components/Admin/Category/AdminCategory'
 // import AdminUser from '@/components/Admin/User/AdminUser'
-// import MyAside from '@/components/Common/Backstage/MyAside'
-// import MyNavbar from '@/components/Common/Backstage/MyNavbar'
+// import AdminAside from '@/components/Common/Backstage/AdminAside'
+// import AdminNavbar from '@/components/Common/Backstage/AdminNavbar'
 // import Personal from '@/components/Admin/Personal/AdminPersonal'
 // import UserLogin from '@/components/User/UserLogin/userLogin'
 // import UserRegister from '@/components/User/UserRegister/userRegister'
@@ -25,14 +25,19 @@ const MyRightBar = () => import ('@/components/Common/fore_end/MyRightBar')
 const AdminLogin = () => import ('@/components/Admin/AdminLogin/Login')
 const AdminHome = () => import ('@/components/Admin/AdminHome/AdminHome')
 const AllPosts = () => import ('@/components/Admin/AllPosts/AdminPosts')
-const AddPosts = () => import ('@/components/Admin/AddPosts/AdminAddPosts')
 const Category = () => import ('@/components/Admin/Category/AdminCategory')
 const AdminUser = () => import ('@/components/Admin/User/AdminUser')
-const MyAside = () => import ('@/components/Common/Backstage/MyAside')
-const MyNavbar = () => import ('@/components/Common/Backstage/MyNavbar')
+const AdminAside = () => import ('@/components/Common/Backstage/AdminAside')
+const AdminNavbar = () => import ('@/components/Common/Backstage/AdminNavbar')
 const Personal = () => import ('@/components/Admin/Personal/AdminPersonal')
 const UserLogin = () => import ('@/components/User/UserLogin/userLogin')
 const UserRegister = () => import ('@/components/User/UserRegister/userRegister')
+const UserHome = () => import ('@/components/User/UserHome/userHome')
+const UserAside = () => import ('@/components/Common/Backstage/UserAside')
+const UserNavbar = () => import ('@/components/Common/Backstage/UserNavbar')
+const AddPosts = () => import ('@/components/User/AddPosts/UserAddPosts')
+const UserPersonal = () => import ('@/components/User/UserPersonal/UserPersonal')
+const UserAllPosts = () => import ('@/components/User/UserAllPosts/UserAllPosts')
 Vue.use(Router)  //注册全局路由 $router 和$route
 //将所有组件挂载
 
@@ -83,8 +88,8 @@ export default new Router({
       name: 'AdminHome',
        components: {
         main:AdminHome,
-        left:MyAside,
-        right:MyNavbar
+        left:AdminAside,
+        right:AdminNavbar
       }
     },
     {
@@ -92,8 +97,8 @@ export default new Router({
       name: 'AllPosts',
        components: {
         main:AllPosts,
-        left:MyAside,
-        right:MyNavbar
+        left:AdminAside,
+        right:AdminNavbar
       }
     },
     // {   管理员登录不写文章,省的麻烦,写的话post文章表需要连admin表和user表两个表,麻烦
@@ -101,8 +106,8 @@ export default new Router({
     //   name: 'AddPosts',
     //    components: {
     //     main: AddPosts,
-    //     left:MyAside,
-    //     right:MyNavbar
+    //     left:AdminAside,
+    //     right:AdminNavbar
     //   }
     // },
       {
@@ -110,8 +115,8 @@ export default new Router({
       name: 'Category',
        components: {
         main: Category,
-        left:MyAside,
-        right:MyNavbar
+        left:AdminAside,
+        right:AdminNavbar
       }
     },
      {
@@ -119,8 +124,8 @@ export default new Router({
       name: 'AdminUser',
        components: {
         main: AdminUser,
-        left:MyAside,
-        right:MyNavbar
+        left:AdminAside,
+        right:AdminNavbar
       }
     },
     {
@@ -128,8 +133,8 @@ export default new Router({
       name: 'Personal',
        components: {
         main: Personal,
-        left:MyAside,
-        right:MyNavbar
+        left:AdminAside,
+        right:AdminNavbar
       }
     },
     {
@@ -144,6 +149,42 @@ export default new Router({
       name: 'UserRegister',
        components: {
         main: UserRegister,
+      }
+    },
+    {
+      path: '/User/home',
+      name: 'UserHome',
+       components: {
+        main:UserHome,
+        left:UserAside,
+        right:UserNavbar
+      }
+    },
+    {   
+      path: '/User/addposts',
+      name: 'AddPosts',
+       components: {
+        main: AddPosts,
+        left:UserAside,
+        right:UserNavbar
+      }
+    },
+    {   
+      path: '/User/userAllPosts',
+      name: 'UserAllPosts',
+       components: {
+        main: UserAllPosts,
+        left:UserAside,
+        right:UserNavbar
+      }
+    },
+    {   
+      path: '/User/userPersonal',
+      name: 'UserPersonal',
+       components: {
+        main: UserPersonal,
+        left:UserAside,
+        right:UserNavbar
       }
     },
   ]
