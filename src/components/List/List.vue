@@ -15,9 +15,9 @@
                 <i class="fa fa-thumbs-up"></i>
                 <span>赞({{post.likes}})</span>
               </a>
-              <router-link :to = "{name:'List',query:{id:post.categories_id,page:1}}" class="tags">
+              <span >
                 分类：<span>{{post.category_name}}</span>
-              </router-link>
+              </span>
             </p>
             <router-link :to = "{name:'Detail',query:{id:post.posts_id}}" class="thumb">
               <img :src="post.feature" alt="">

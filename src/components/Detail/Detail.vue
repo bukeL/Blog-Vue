@@ -17,8 +17,8 @@
         <div class="meta">
           <span>{{post.user_name}} 发布于 {{post.created | convertTime('YYYY-MM-DD')}}</span>
           <span>分类: <router-link :to = "{name:'List',query:{id:post.categories_id}}">{{post.category}}</router-link></span>
-          <span>阅读: ({{post.views}})</span>
-          <span>点赞: ({{post.posts_likes}})</span>
+          <span>阅读: ({{post.views+1}})</span>
+          <a class="like" @click = "addlikes(post.posts_id,post.posts_likes)">点赞: ({{likeNum}})</a>
         </div>
         </div>
       </div>
@@ -38,23 +38,27 @@
      detailValue:0,
      myOnePost:[],
      postIsShow:true,
+     likeNum:0
     }
   },
   methods:{
     loadOnePost(id,value){
       if(arguments.length==1){
+        //通过列表点击进入的detail页面
         this.$axios.get('myPostById?id='+ id) 
         .then(res => {
           this.postIsShow = true
-          // alert(this.postIsShow)
-          this.myOnePost = res.data
-          // console.log(res.data)
+          // console.log(res.data.length)
           if(res.data.length == 0){
             // alert('空')
             this.postIsShow = false
-          }else{
-             this.postIsShow = true
+            return
           }
+          // alert(this.postIsShow)
+          this.myOnePost = res.data
+          this.likeNum = this.myOnePost[0].posts_likes
+          // console.log(res.data)
+          this.addView(this.myOnePost[0].posts_id,this.myOnePost[0].views)
           // console.log(this.myOnePost)
         })
         .catch(err => {
@@ -62,14 +66,18 @@
         })
         // alert('一个参数')
       }else if(arguments.length==2){
+        //通过搜索进入的detail页面
         this.$axios.get('myPostByValue?myValue='+ value) 
         .then(res => {
           this.postIsShow = true
-          this.myOnePost = res.data
           if(res.data.length == 0){
             // alert('空')
             this.postIsShow = false
+            return
           }
+          this.myOnePost = res.data
+          this.likeNum = this.myOnePost[0].posts_likes
+          this.addView(this.myOnePost[0].posts_id,this.myOnePost[0].views)
           // console.log(this.myOnePost)
         })
         .catch(err => {
@@ -77,6 +85,25 @@
         })
       }
     },
+    addView(id,viewNum){
+      // alert(1)
+      this.$axios.post('addView',{param:{'id':id,'viewNum':viewNum}})
+      .then(res => {
+        return
+      })
+      .catch(err => console.log(err))
+    },
+    addlikes(id,likeNum){
+      // alert(1)
+      this.$axios.post('addlikes',{param:{'id':id,'likeNum':likeNum}})
+      .then(res => {
+        // retur
+        alert('谢谢点赞')
+        console.log(res.data)
+        this.likeNum = this.likeNum + 1
+      })
+      .catch(err => console.log(err))
+    }
   },
   created(){
     this.detailId = this.$route.query.id || null;
@@ -94,7 +121,6 @@
       // alert(this.listId)
       this.detailId = to.query.id || null;
       this.detailValue = to.query.value || null
-
       if (this.detailId != null){
         this.loadOnePost(this.detailId)
       } else {
@@ -107,7 +133,7 @@
       // alert(this.listId)
       next()
   }
-}
+  }
 </script>
 
 <style scoped>
@@ -171,5 +197,8 @@
   font-size: 30px;
   text-align: center;
 
+}
+.like {
+  cursor: pointer;
 }
 </style>

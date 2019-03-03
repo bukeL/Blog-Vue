@@ -53,7 +53,41 @@ router.get('/api/myRandom', function (req, res) {
 	})
 })
 
-//通过分类id和页码page 查询分类下的文章,只查询已经批准的
+//当detail组件被渲染时,增加一次views的次数
+router.post('/api/addView', function (req, res) {
+	var posts_id = req.body.param.id
+	var viewNum = parseInt(req.body.param.viewNum) + 1
+	// console.log(posts_id,viewNum)
+	var sql = `update posts set views='${viewNum}' where id=${posts_id}`
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		//切割数组
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
+})
+//点击点赞后增加当前蒂娜赞次数
+router.post('/api/addlikes', function (req, res) {
+	var posts_id = req.body.param.id
+	var likeNum = parseInt(req.body.param.likeNum) + 1
+	console.log(posts_id,likeNum)
+	var sql = `update posts set likes='${likeNum}' where id=${posts_id}`
+	db.query(sql, function(error, results, fields){
+		if(error){
+			console.log(error)
+			return
+		}
+		//切割数组
+		var result = results
+		// console.log(result)
+		res.json(result)
+	})
+})
+//通过分类id和页码page 查询分类下的文章,只查询已经批准的addlikes
 router.get('/api/myCategoriyPost', function (req, res) {
 	var id = parseInt(req.query.id) || 1
 	//每次查询4条

@@ -86,6 +86,7 @@ export default {
           // this.showLoginStatus()
           // alert(this.$store.getters.getuserIsLogin)
           this.$router.go(0)
+          // window.histroy.go(0)
         }
           // this.$store.commit('updateUserId','')
 
