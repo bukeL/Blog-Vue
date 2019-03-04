@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper panel new">
         <h3>最新发布</h3>
-        <div class="entry" v-for ="(post,posts_id) in categoriyPost" :key = "posts_id" >
+        <div class="entry" v-for ="(post,index) in categoriyPost" :key = "index" >
           <div class="head">
             <span class="sort">{{post.category_name}}</span>
             <router-link :to = "{name:'Detail',query:{id:post.posts_id}}">{{post.title}}</router-link>
@@ -11,7 +11,7 @@
             <p class="brief">{{post.content}}</p>
             <p class="extra">
               <span class="reading">阅读({{post.views}})</span>
-              <a href="javascript:;" class="like">
+              <a href="javascript:;" class="like" @click="addlikes(post.posts_id,post.likes,index)">
                 <i class="fa fa-thumbs-up"></i>
                 <span>赞({{post.likes}})</span>
               </a>
@@ -41,6 +41,7 @@
         page: 1,
         isShow: false,
         // isShowLoad:true,
+        // likeNum:0
       }
     },
     methods:{
@@ -72,6 +73,19 @@
       .catch(err => {
         console.log(err)
       })
+    },
+    addlikes(id,likeNum,index){
+      // alert(1)
+      this.$axios.post('addlikes',{param:{'id':id,'likeNum':likeNum}})
+      .then(res => {
+        // retur
+        alert('谢谢点赞')
+        this.categoriyPost[index].likes = this.categoriyPost[index].likes + 1
+        // console.log(res.data)
+        // this.$router.go(0)
+        // this.likeNum = this.likeNum + 1
+      })
+      .catch(err => console.log(err))
     }
     },
     created (){
